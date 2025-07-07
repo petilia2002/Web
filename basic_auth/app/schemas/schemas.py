@@ -1,42 +1,32 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
+
+
+class RoleBase(BaseModel):
+    id: Optional[int] = None
+    name: str
+
+
+class RoleResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        from_attributes = True
 
 
 class UserBase(BaseModel):
-    name: str
+    username: str
     password: str
 
 
 class UserResponse(UserBase):
     id: int
-    registered_at: datetime
+    roles: List[str]
 
     class Config:
         from_attributes = True
-
-
-class UserData(BaseModel):
-    id: Optional[int] = None
-    author: str
-    title: str
-    content: str
-
-
-class RoleBase(BaseModel):
-    name: str
-
-
-class RoleResponse(RoleBase):
-    id: int
-
-    class Config:
-        from_attributes = True
-
-
-class RoleData(BaseModel):
-    id: Optional[int] = None
-    name: str
 
 
 class MessageResponse(BaseModel):

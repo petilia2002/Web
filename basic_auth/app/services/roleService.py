@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
 
-from app.schemas.schemas import RoleData
+from app.schemas.schemas import RoleBase
 from app.exceptions import ItemNotFound
 from app.db.transaction import transactional
 from app.models.models import Role
@@ -22,14 +22,14 @@ class RoleService:
         return post
 
     @staticmethod
-    async def create_role(db: AsyncSession, role: RoleData):
+    async def create_role(db: AsyncSession, role: RoleBase):
         new_role = Role(**role.model_dump())
         async with transactional(db):
             db.add(new_role)
         return new_role
 
     @staticmethod
-    async def update_role(db: AsyncSession, role: RoleData):
+    async def update_role(db: AsyncSession, role: RoleBase):
         id = role.model_dump().get("id")
         if not id:
             raise KeyError("Missing required id parameter")

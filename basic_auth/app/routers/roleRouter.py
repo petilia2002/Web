@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
 from app.db.database import get_async_db
-from app.schemas.schemas import RoleResponse, RoleData
+from app.schemas.schemas import RoleResponse, RoleBase
 from app.controllers.roleController import RoleController
 from app.utils.role_parser import parse_role
 
@@ -26,7 +26,7 @@ async def get_role_by_id(role_id: int, db: AsyncSession = Depends(get_async_db))
 
 @router.post("", response_model=RoleResponse)
 async def create_role(
-    role: RoleData = Depends(parse_role),
+    role: RoleBase = Depends(parse_role),
     db: AsyncSession = Depends(get_async_db),
 ):
     return await RoleController.create_role(db=db, role=role)
@@ -39,6 +39,6 @@ async def delete_role(role_id: int, db: AsyncSession = Depends(get_async_db)):
 
 @router.put("", response_model=RoleResponse)
 async def update_role(
-    role: RoleData = Depends(parse_role), db: AsyncSession = Depends(get_async_db)
+    role: RoleBase = Depends(parse_role), db: AsyncSession = Depends(get_async_db)
 ):
     return await RoleController.update_role(db, role)

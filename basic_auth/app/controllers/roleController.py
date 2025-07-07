@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.schemas import RoleData
+from app.schemas.schemas import RoleBase
 from app.exceptions import ItemNotFound
 from app.services.roleService import RoleService
 from app.exceptions import ItemNotFound
@@ -25,14 +25,14 @@ class RoleController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    async def create_role(db: AsyncSession, role: RoleData):
+    async def create_role(db: AsyncSession, role: RoleBase):
         try:
             return await RoleService.create_role(db, role)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    async def update_role(db: AsyncSession, role: RoleData):
+    async def update_role(db: AsyncSession, role: RoleBase):
         try:
             return await RoleService.update_role(db, role)
         except ItemNotFound as e:
