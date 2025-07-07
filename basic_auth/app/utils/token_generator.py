@@ -13,13 +13,13 @@ def payload_proprocessing(payload, time_fields):
     return payload
 
 
-def generate_access_token(id: str, name: str, roles: str) -> str:
+def generate_access_token(id: str, username: str, roles: str) -> str:
     payload = {
         "id": id,
-        "name": name,
+        "username": username,
         "roles": roles,
         "iat": datetime.now(timezone.utc),
-        "exp": datetime.now(timezone.utc) + timedelta(days=1),
+        "exp": datetime.now(timezone.utc) + timedelta(days=1, hours=1),
     }
     return jwt.encode(payload=payload, key=SECRET_KEY, algorithm="HS256")
 

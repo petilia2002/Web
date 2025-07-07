@@ -31,3 +31,7 @@ class UserResponse(UserBase):
 
 class MessageResponse(BaseModel):
     message: str
+
+
+class TokenResponse(BaseModel):
+    token: str

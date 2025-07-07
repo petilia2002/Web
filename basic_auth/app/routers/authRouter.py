@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
 from app.db.database import get_async_db
-from app.schemas.schemas import UserResponse, MessageResponse, UserBase
+from app.schemas.schemas import UserResponse, MessageResponse, TokenResponse, UserBase
 from app.controllers.authController import AuthController
 from app.utils.user_parser import parse_user
 
@@ -20,7 +20,7 @@ async def registration(
     return await AuthController.registration(db, user=user)
 
 
-@router.post("/login", response_model=MessageResponse)
+@router.post("/login", response_model=TokenResponse)
 async def login(
     user: UserBase = Depends(parse_user),
     db: AsyncSession = Depends(get_async_db),
