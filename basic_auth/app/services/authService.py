@@ -1,14 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.schemas import UserBase
+from app.schemas.schemas import UserData
 
 
 class AuthService:
     @staticmethod
-    async def registration(db: AsyncSession, user: UserBase):
+    async def registration(db: AsyncSession, user: UserData):
         pass
 
     @staticmethod
-    async def login(db: AsyncSession, user: UserBase):
+    async def login(db: AsyncSession, user: UserData):
         pass
 
     @staticmethod

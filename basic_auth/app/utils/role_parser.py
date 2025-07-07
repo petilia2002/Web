@@ -1,9 +1,9 @@
 from fastapi import Request, HTTPException
 from pydantic import ValidationError
-from app.schemas.schemas import RoleBase
+from app.schemas.schemas import RoleData
 
 
-async def parse_role(request: Request) -> RoleBase:
+async def parse_role(request: Request) -> RoleData:
     content_type = request.headers.get("Content-Type", "")
 
     # Обработка JSON-запроса
@@ -14,7 +14,7 @@ async def parse_role(request: Request) -> RoleBase:
             raise HTTPException(status_code=400, detail="Invalid JSON body")
 
         try:
-            data = RoleBase(**json_data)
+            data = RoleData(**json_data)
         except ValidationError as e:
             raise HTTPException(
                 status_code=400, detail=f"Validation error: {e.errors()}"
@@ -28,10 +28,10 @@ async def parse_role(request: Request) -> RoleBase:
     ):
         try:
             form = await request.form()
-            data = RoleBase(**form)
+            data = RoleData(**form)
         except KeyError as e:
             raise HTTPException(status_code=400, detail=f"Missing form field: {str(e)}")
-        except Exception:
+        except Exception as e:
             raise HTTPException(status_code=400, detail="Invalid multipart/form-data")
 
         return data

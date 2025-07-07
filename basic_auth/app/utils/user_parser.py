@@ -1,9 +1,9 @@
 from fastapi import Request, HTTPException
 from pydantic import ValidationError
-from app.schemas.schemas import UserBase
+from app.schemas.schemas import UserData
 
 
-async def parse_user(request: Request) -> UserBase:
+async def parse_user(request: Request) -> UserData:
     content_type = request.headers.get("Content-Type", "")
 
     # Обработка JSON-запроса
@@ -14,7 +14,7 @@ async def parse_user(request: Request) -> UserBase:
             raise HTTPException(status_code=400, detail="Invalid JSON body")
 
         try:
-            data = UserBase(**json_data)
+            data = UserData(**json_data)
         except ValidationError as e:
             raise HTTPException(
                 status_code=400, detail=f"Validation error: {e.errors()}"
@@ -28,7 +28,7 @@ async def parse_user(request: Request) -> UserBase:
     ):
         try:
             form = await request.form()
-            data = UserBase(**form)
+            data = UserData(**form)
         except KeyError as e:
             raise HTTPException(status_code=400, detail=f"Missing form field: {str(e)}")
         except Exception:
