@@ -15,10 +15,10 @@ async def parse_user(request: Request) -> UserBase:
 
         try:
             data = UserBase(**json_data)
-        except ValidationError as e:
-            raise HTTPException(
-                status_code=400, detail=f"Validation error: {e.errors()}"
-            )
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))
         return data
 
     # Обработка multipart/form-data
@@ -31,6 +31,8 @@ async def parse_user(request: Request) -> UserBase:
             data = UserBase(**form)
         except KeyError as e:
             raise HTTPException(status_code=400, detail=f"Missing form field: {str(e)}")
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
         except Exception:
             raise HTTPException(status_code=400, detail="Invalid multipart/form-data")
 

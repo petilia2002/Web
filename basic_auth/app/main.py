@@ -3,6 +3,9 @@ from contextlib import asynccontextmanager
 from app.routers import authRouter, roleRouter
 from app.db.database import async_engine
 from app.models.models import Base
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 
 @asynccontextmanager
@@ -25,6 +28,13 @@ app = FastAPI(
 # Включаем асинхронные роутеры
 app.include_router(authRouter.router, prefix="/auth")
 app.include_router(roleRouter.router, prefix="/api")
+
+
+@app.exception_handler(ValidationError)
+async def validation_exception_handler(request: Request, exc: ValidationError):
+    # Берём только сообщения об ошибках
+    errors = [err["msg"] for err in exc.errors()]
+    return JSONResponse(status_code=422, content={"detail": errors})
 
 
 # Асинхронный корневой эндпоинт
