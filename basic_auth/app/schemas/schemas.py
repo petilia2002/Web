@@ -25,7 +25,7 @@ class UserBase(BaseModel):
     @classmethod
     def validate_username(cls, v):
         if not re.match(r"^[a-zA-Z0-9_]+$", v):
-            raise ValidationError(
+            raise ValueError(
                 "Username must contain only letters, numbers, and underscores"
             )
         return v
@@ -34,7 +34,7 @@ class UserBase(BaseModel):
     @classmethod
     def validate_password(cls, v):
         if " " in v:
-            raise ValidationError("Password must not contain spaces")
+            raise ValueError("Password must not contain spaces")
         return v
 
 
