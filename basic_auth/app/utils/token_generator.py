@@ -1,7 +1,7 @@
 import jwt
 from datetime import datetime, timedelta, timezone
 from app.core.config import SECRET_KEY
-from typing import Any
+from typing import List, Any
 
 
 def payload_proprocessing(payload, time_fields):
@@ -13,7 +13,7 @@ def payload_proprocessing(payload, time_fields):
     return payload
 
 
-def generate_access_token(id: str, username: str, roles: str) -> str:
+def generate_access_token(id: str, username: str, roles: List[str]) -> str:
     payload = {
         "id": id,
         "username": username,

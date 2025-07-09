@@ -6,11 +6,13 @@ from app.db.database import get_async_db
 from app.schemas.schemas import RoleResponse, RoleBase
 from app.controllers.roleController import RoleController
 from app.utils.role_parser import parse_role
+from app.dependencies.roleDependency import require_roles
 
 router = APIRouter(
     prefix="/roles",
     tags=["roles"],
     responses={404: {"description": "Not found"}},
+    dependencies=[Depends(require_roles(["admin"]))],
 )
 
 

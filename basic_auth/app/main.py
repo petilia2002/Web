@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 from app.routers import authRouter, roleRouter
 from app.db.database import async_engine
