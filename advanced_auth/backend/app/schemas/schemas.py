@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field, field_validator, EmailStr
 
 
@@ -20,15 +20,26 @@ class UserResponse(BaseModel):
     email: str
     password: str
     activation_link: str
-    is_activated: bool
+    is_activated: Optional[bool] = None
 
     class Config:
         from_attributes = True
 
 
+class LoginData(BaseModel):
+    access_token: str
+    refresh_token: str
+    user: Dict[str, Any]
+
+
+class TokenBase(BaseModel):
+    user_id: int
+    refresh_token: str
+
+
+class TokenResponse(TokenBase):
+    id: int
+
+
 class MessageResponse(BaseModel):
     message: str
-
-
-class TokenResponse(BaseModel):
-    token: str

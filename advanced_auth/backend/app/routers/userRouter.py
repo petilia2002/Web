@@ -28,9 +28,9 @@ async def logout(db: AsyncSession = Depends(get_async_db)):
     return await UserController.logout(db)
 
 
-@router.get(path="/activate", response_model=MessageResponse)
-async def activate(db: AsyncSession = Depends(get_async_db)):
-    return await UserController.activate(db)
+@router.get(path="/activate/{link}", response_model=MessageResponse)
+async def activate(link: str, db: AsyncSession = Depends(get_async_db)):
+    return await UserController.activate(link, db)
 
 
 @router.get(path="/refresh", response_model=MessageResponse)

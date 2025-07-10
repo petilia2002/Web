@@ -28,9 +28,9 @@ class UserController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    async def activate(db: AsyncSession):
+    async def activate(activation_link: str, db: AsyncSession):
         try:
-            return await UserService.activate(db)
+            return await UserService.activate(activation_link, db)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
