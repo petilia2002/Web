@@ -1,15 +1,15 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_db
-from app.schemas.schemas import UserBase, MessageResponse
+from app.schemas.schemas import UserBase, MessageResponse, LoginData
 from app.controllers.userController import UserController
 from app.utils.request_parser import RequestData, parse_request
 
 router = APIRouter(tags=["auth"], responses={404: {"description": "Not Found"}})
 
 
-@router.post(path="/registration", response_model=MessageResponse)
+@router.post(path="/registration", response_model=LoginData)
 async def registration(
     req: RequestData = Depends(parse_request), db: AsyncSession = Depends(get_async_db)
 ):
@@ -28,9 +28,9 @@ async def logout(db: AsyncSession = Depends(get_async_db)):
     return await UserController.logout(db)
 
 
-@router.get(path="/activate/{link}", response_model=MessageResponse)
-async def activate(link: str, db: AsyncSession = Depends(get_async_db)):
-    return await UserController.activate(link, db)
+@router.get(path="/activate/{link}")
+async def activate(request: Request, db: AsyncSession = Depends(get_async_db)):
+    return await UserController.activate(request, db)
 
 
 @router.get(path="/refresh", response_model=MessageResponse)

@@ -41,7 +41,7 @@ class TokenService:
 
         if found_token:
             async with transactional(db):
-                found_token.resfresh_token = refresh_token
+                found_token.refresh_token = refresh_token
             await db.refresh(found_token)
             return TokenResponse.model_validate(found_token)
         else:

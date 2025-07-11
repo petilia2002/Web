@@ -52,7 +52,14 @@ class UserService:
 
     @staticmethod
     async def activate(activation_link: str, db: AsyncSession):
-        pass
+        result = await db.execute(
+            select(User).where(User.activation_link == activation_link)
+        )
+        user = result.scalars().first()
+
+        async with transactional(db):
+            if user:
+                user.is_activated = True
 
     @staticmethod
     async def refresh(db: AsyncSession):

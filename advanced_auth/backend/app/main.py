@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+
 from app.routers import userRouter
 from app.db.database import async_engine
 from app.models.models import Base
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from pydantic import ValidationError
+from app.middlewares.errorMiddleware import global_exception_handler
+from app.exceptions.apiError import ApiError
 
 
 @asynccontextmanager
@@ -26,6 +26,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_exception_handler(Exception, global_exception_handler)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -34,18 +36,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# middleware
+
 # Включаем асинхронные роутеры
 app.include_router(userRouter.router, prefix="/auth")
-
-
-@app.exception_handler(ValidationError)
-async def validation_exception_handler(request: Request, exc: ValidationError):
-    # Берём только сообщения об ошибках
-    errors = [err["msg"] for err in exc.errors()]
-    return JSONResponse(status_code=422, content={"detail": errors})
 
 
 # Асинхронный корневой эндпоинт
 @app.get("/")
 async def root():
-    return {"Message": "Welcome to my FastAPI application!"}
+    try:
+        raise ApiError.BadRequest("BadRequest")
+    # return {"Message": "Welcome to my FastAPI application!"}
+    except Exception:
+        raise

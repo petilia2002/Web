@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field, field_validator, EmailStr
 
@@ -39,6 +39,9 @@ class TokenBase(BaseModel):
 
 class TokenResponse(TokenBase):
     id: int
+
+    class Config:
+        from_attributes = True
 
 
 class MessageResponse(BaseModel):
