@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from app.routers import userRouter
 from app.db.database import async_engine
 from app.models.models import Base
-from app.middlewares.errorMiddleware import global_exception_handler
+from app.middlewares.errorHandlingMiddleware import ErrorHandlingMiddleware
 from app.exceptions.apiError import ApiError
 
 
@@ -26,8 +26,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.add_exception_handler(Exception, global_exception_handler)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -36,7 +34,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# middleware
+app.add_middleware(ErrorHandlingMiddleware)
 
 # Включаем асинхронные роутеры
 app.include_router(userRouter.router, prefix="/auth")
@@ -45,8 +43,4 @@ app.include_router(userRouter.router, prefix="/auth")
 # Асинхронный корневой эндпоинт
 @app.get("/")
 async def root():
-    try:
-        raise ApiError.BadRequest("BadRequest")
-    # return {"Message": "Welcome to my FastAPI application!"}
-    except Exception:
-        raise
+    return {"Message": "Welcome to my FastAPI application!"}

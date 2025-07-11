@@ -3,7 +3,6 @@ from typing import List, Any
 
 class ApiError(Exception):
     def __init__(self, status_code: int, message: str, errors: List[Any] = []):
-        super().__init__(message)
         self.status_code = status_code
         self.message = message
         self.errors = errors

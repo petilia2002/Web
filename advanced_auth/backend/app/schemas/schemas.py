@@ -1,4 +1,5 @@
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
+from pydantic_core import PydanticCustomError
 from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field, field_validator, EmailStr
 
@@ -11,7 +12,11 @@ class UserBase(BaseModel):
     @classmethod
     def validate_password(cls, v: str) -> str:
         if " " in v:
-            raise ValueError("Password must not contain spaces")
+            raise PydanticCustomError(
+                "password_whitespace",
+                "Password must not contain spaces",
+                {"invalid_value": v},
+            )
         return v
 
 

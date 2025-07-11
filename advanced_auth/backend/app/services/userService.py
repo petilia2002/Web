@@ -10,6 +10,7 @@ from app.services.mailService import mailService
 from app.services.tokenService import TokenService
 from app.core.config import API_URL
 from app.dtos.userDto import UserDto
+from app.exceptions.apiError import ApiError
 
 
 class UserService:
@@ -20,7 +21,9 @@ class UserService:
         result = await db.execute(select(User).where(User.email == user_data["email"]))
         candidate = result.scalar_one_or_none()
         if candidate:
-            raise Exception("A user with such an email already exists")
+            raise ApiError.BadRequest(
+                message="A user with such an email already exists"
+            )
 
         user_data["password"] = await async_hash_password(user_data["password"])
         activation_link = f"{API_URL}/auth/activate/{uuid.uuid4().hex}"
@@ -56,10 +59,11 @@ class UserService:
             select(User).where(User.activation_link == activation_link)
         )
         user = result.scalars().first()
+        if not user:
+            raise ApiError.BadRequest(message="Invalid activation link")
 
         async with transactional(db):
-            if user:
-                user.is_activated = True
+            user.is_activated = True
 
     @staticmethod
     async def refresh(db: AsyncSession):
@@ -67,4 +71,5 @@ class UserService:
 
     @staticmethod
     async def get_users(db: AsyncSession):
-        pass
+        result = await db.execute(select(User).order_by(User.id.desc()))
+        return result.scalars().all()

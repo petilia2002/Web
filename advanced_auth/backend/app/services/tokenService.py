@@ -1,6 +1,6 @@
 import jwt
 from datetime import datetime, timedelta, timezone
-from typing import List, Any, Dict
+from typing import Any, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -73,6 +73,10 @@ class TokenService:
             return TokenService.payload_proprocessing(payload, ["iat", "exp"])
         except Exception:
             return None
+
+    @staticmethod
+    async def find_token():
+        pass
 
     @staticmethod
     async def remove_token():

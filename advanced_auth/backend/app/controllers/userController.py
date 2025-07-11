@@ -7,6 +7,7 @@ from app.schemas.schemas import UserBase
 from app.utils.request_parser import RequestData
 from app.services.userService import UserService
 from app.core.config import CLIENT_URL
+from app.exceptions.apiError import ApiError
 
 
 class UserController:
@@ -16,9 +17,9 @@ class UserController:
             return await UserService.registration(UserBase(**req.body), db)
         except ValidationError as e:
             messages = [err["msg"] for err in e.errors()]
-            raise HTTPException(status_code=400, detail=messages)
+            raise ApiError.BadRequest(message=messages[-1], errors=e.errors())
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise
 
     @staticmethod
     async def login(req: RequestData, db: AsyncSession):
@@ -26,9 +27,9 @@ class UserController:
             return await UserService.login(UserBase(**req.body), db)
         except ValidationError as e:
             messages = [err["msg"] for err in e.errors()]
-            raise HTTPException(status_code=400, detail=messages)
+            raise ApiError.BadRequest(message=messages[-1], errors=e.errors())
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise
 
     @staticmethod
     async def logout(db: AsyncSession):
