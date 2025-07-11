@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 import uuid
 
-from app.schemas.schemas import UserBase, LoginData
+from app.schemas.schemas import UserBase, LoginData, UserResponse, MessageResponse
 from app.models.models import User
 from app.core.security import async_hash_password, async_verify_password
 from app.db.transaction import transactional
@@ -47,11 +47,39 @@ class UserService:
 
     @staticmethod
     async def login(user: UserBase, db: AsyncSession):
-        pass
+        user_data = {**user.model_dump()}
+
+        result = await db.execute(select(User).where(User.email == user_data["email"]))
+        candidate = result.scalar_one_or_none()
+        if not candidate:
+            raise ApiError.BadRequest(
+                message="There is no user with this email address"
+            )
+
+        password_is_valid = await async_verify_password(
+            user_data["password"], candidate.password
+        )
+        if not password_is_valid:
+            raise ApiError.BadRequest(message="The entered password is incorrect")
+
+        userDto = UserDto(candidate)
+        tokens = TokenService.generate_tokens(userDto.to_dict)
+        await TokenService.save_refresh_token(userDto.id, tokens["refresh_token"], db)
+
+        return LoginData(
+            access_token=tokens["access_token"],
+            refresh_token=tokens["refresh_token"],
+            user=userDto.to_dict,
+        )
 
     @staticmethod
-    async def logout(db: AsyncSession):
-        pass
+    async def logout(refresh_token: str, db: AsyncSession):
+        token = await TokenService.find_token(refresh_token, db)
+        if token:
+            await TokenService.remove_token(refresh_token, db)
+        return MessageResponse(
+            message="The user has successfully logged out of the account"
+        )
 
     @staticmethod
     async def activate(activation_link: str, db: AsyncSession):
@@ -72,4 +100,5 @@ class UserService:
     @staticmethod
     async def get_users(db: AsyncSession):
         result = await db.execute(select(User).order_by(User.id.desc()))
-        return result.scalars().all()
+        users = result.scalars().all()
+        return [UserResponse.model_validate(user) for user in users]

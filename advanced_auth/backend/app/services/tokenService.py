@@ -2,7 +2,7 @@ import jwt
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from app.core.config import JWT_ACCESS_KEY, JWT_REFRESH_KEY
 from app.db.transaction import transactional
@@ -75,9 +75,13 @@ class TokenService:
             return None
 
     @staticmethod
-    async def find_token():
-        pass
+    async def find_token(refresh_token: str, db: AsyncSession):
+        result = await db.execute(
+            select(Token).where(Token.refresh_token == refresh_token)
+        )
+        return result.scalar_one_or_none()
 
     @staticmethod
-    async def remove_token():
-        pass
+    async def remove_token(refresh_token: str, db: AsyncSession):
+        async with transactional(db):
+            await db.execute(delete(Token).where(Token.refresh_token == refresh_token))

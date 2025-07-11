@@ -1,4 +1,4 @@
-from fastapi import HTTPException, Request
+from fastapi import HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import ValidationError
@@ -12,9 +12,18 @@ from app.exceptions.apiError import ApiError
 
 class UserController:
     @staticmethod
-    async def registration(req: RequestData, db: AsyncSession):
+    async def registration(req: RequestData, res: Response, db: AsyncSession):
         try:
-            return await UserService.registration(UserBase(**req.body), db)
+            user_data = await UserService.registration(UserBase(**req.body), db)
+            res.set_cookie(
+                key="refresh_token",
+                value=user_data.refresh_token,
+                max_age=8 * 7 * 24 * 60 * 60,
+                secure=False,
+                httponly=True,
+                samesite="lax",
+            )
+            return user_data
         except ValidationError as e:
             messages = [err["msg"] for err in e.errors()]
             raise ApiError.BadRequest(message=messages[-1], errors=e.errors())
@@ -22,9 +31,18 @@ class UserController:
             raise
 
     @staticmethod
-    async def login(req: RequestData, db: AsyncSession):
+    async def login(req: RequestData, res: Response, db: AsyncSession):
         try:
-            return await UserService.login(UserBase(**req.body), db)
+            user_data = await UserService.login(UserBase(**req.body), db)
+            res.set_cookie(
+                key="refresh_token",
+                value=user_data.refresh_token,
+                max_age=8 * 7 * 24 * 60 * 60,
+                secure=False,
+                httponly=True,
+                samesite="lax",
+            )
+            return user_data
         except ValidationError as e:
             messages = [err["msg"] for err in e.errors()]
             raise ApiError.BadRequest(message=messages[-1], errors=e.errors())
@@ -32,9 +50,10 @@ class UserController:
             raise
 
     @staticmethod
-    async def logout(db: AsyncSession):
+    async def logout(refresh_token: str, res: Response, db: AsyncSession):
         try:
-            return await UserService.logout(db)
+            res.delete_cookie(key="refresh_token")
+            return await UserService.logout(refresh_token, db)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
