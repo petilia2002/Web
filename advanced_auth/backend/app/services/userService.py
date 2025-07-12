@@ -94,7 +94,7 @@ class UserService:
             user.is_activated = True
 
     @staticmethod
-    async def refresh(db: AsyncSession):
+    async def refresh(refresh_token: str, db: AsyncSession):
         pass
 
     @staticmethod

@@ -66,9 +66,9 @@ class UserController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    async def refresh(db: AsyncSession):
+    async def refresh(refresh_token: str, res: Response, db: AsyncSession):
         try:
-            return await UserService.refresh(db)
+            return await UserService.refresh(refresh_token, db)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 

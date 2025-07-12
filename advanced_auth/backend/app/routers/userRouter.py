@@ -6,6 +6,7 @@ from app.db.database import get_async_db
 from app.schemas.schemas import UserResponse, LoginData, MessageResponse
 from app.controllers.userController import UserController
 from app.utils.request_parser import RequestData, parse_request
+from app.dependencies.authDependency import require_auth
 
 router = APIRouter(tags=["auth"], responses={404: {"description": "Not Found"}})
 
@@ -43,10 +44,16 @@ async def activate(request: Request, db: AsyncSession = Depends(get_async_db)):
 
 
 @router.get(path="/refresh", response_model=MessageResponse)
-async def refresh(db: AsyncSession = Depends(get_async_db)):
-    return await UserController.refresh(db)
+async def refresh(
+    res: Response,
+    refresh_token: str = Cookie(default=None),
+    db: AsyncSession = Depends(get_async_db),
+):
+    return await UserController.refresh(refresh_token, res, db)
 
 
 @router.get(path="/users", response_model=List[UserResponse])
-async def get_users(db: AsyncSession = Depends(get_async_db)):
+async def get_users(
+    _: dict = Depends(require_auth), db: AsyncSession = Depends(get_async_db)
+):
     return await UserController.get_users(db)
