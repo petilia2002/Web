@@ -17,7 +17,7 @@ class TokenService:
             payload={
                 **user,
                 "iat": datetime.now(timezone.utc),
-                "exp": datetime.now(timezone.utc) + timedelta(days=1),
+                "exp": datetime.now(timezone.utc) + timedelta(days=1, hours=1),
             },
             key=JWT_ACCESS_KEY,
             algorithm="HS256",
