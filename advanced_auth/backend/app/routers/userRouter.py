@@ -43,7 +43,7 @@ async def activate(request: Request, db: AsyncSession = Depends(get_async_db)):
     return await UserController.activate(request, db)
 
 
-@router.get(path="/refresh", response_model=MessageResponse)
+@router.get(path="/refresh", response_model=LoginData)
 async def refresh(
     res: Response,
     refresh_token: str = Cookie(default=None),

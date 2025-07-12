@@ -55,7 +55,7 @@ class UserController:
             res.delete_cookie(key="refresh_token")
             return await UserService.logout(refresh_token, db)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise
 
     @staticmethod
     async def activate(request: Request, db: AsyncSession):
@@ -63,18 +63,27 @@ class UserController:
             await UserService.activate(str(request.url), db)
             return RedirectResponse(url=CLIENT_URL, status_code=302)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise
 
     @staticmethod
     async def refresh(refresh_token: str, res: Response, db: AsyncSession):
         try:
-            return await UserService.refresh(refresh_token, db)
+            user_data = await UserService.refresh(refresh_token, db)
+            res.set_cookie(
+                key="refresh_token",
+                value=user_data.refresh_token,
+                max_age=8 * 7 * 24 * 60 * 60,
+                secure=False,
+                httponly=True,
+                samesite="lax",
+            )
+            return user_data
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise
 
     @staticmethod
     async def get_users(db: AsyncSession):
         try:
             return await UserService.get_users(db)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise

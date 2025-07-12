@@ -95,7 +95,37 @@ class UserService:
 
     @staticmethod
     async def refresh(refresh_token: str, db: AsyncSession):
-        pass
+        if not refresh_token:
+            raise ApiError.UnauthorizationError(message="The refresh token is missing")
+
+        token = await TokenService.find_token(refresh_token, db)
+        if not token:
+            raise ApiError.UnauthorizationError(
+                message="There is no such refresh token"
+            )
+
+        payload = TokenService.verify_refresh_token(refresh_token)
+        if not payload:
+            raise ApiError.UnauthorizationError(
+                message="The refresh token is not valid"
+            )
+
+        result = await db.execute(select(User).where(User.id == payload["id"]))
+        user = result.scalar_one_or_none()
+        if not user:
+            raise ApiError.UnauthorizationError(
+                message="There is no user with such a refresh token"
+            )
+
+        userDto = UserDto(user)
+        tokens = TokenService.generate_tokens(userDto.to_dict)
+        await TokenService.save_refresh_token(userDto.id, tokens["refresh_token"], db)
+
+        return LoginData(
+            access_token=tokens["access_token"],
+            refresh_token=tokens["refresh_token"],
+            user=userDto.to_dict,
+        )
 
     @staticmethod
     async def get_users(db: AsyncSession):
