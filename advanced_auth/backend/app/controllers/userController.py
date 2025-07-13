@@ -26,7 +26,7 @@ class UserController:
             return user_data
         except ValidationError as e:
             messages = [err["msg"] for err in e.errors()]
-            raise ApiError.BadRequest(message=messages[-1], errors=e.errors())
+            raise ApiError.BadRequest(message=", ".join(messages), errors=e.errors())
         except Exception as e:
             raise
 
@@ -45,7 +45,7 @@ class UserController:
             return user_data
         except ValidationError as e:
             messages = [err["msg"] for err in e.errors()]
-            raise ApiError.BadRequest(message=messages[-1], errors=e.errors())
+            raise ApiError.BadRequest(message=", ".join(messages), errors=e.errors())
         except Exception as e:
             raise
 
