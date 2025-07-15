@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import MyButton from "./UI/button/MyButton";
 
 export default function PostItem({ number, post, deletePost }) {

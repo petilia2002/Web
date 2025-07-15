@@ -1,23 +1,29 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import PostItem from "./PostItem";
 
 export default function PostList({ posts, title, deletePost }) {
-  if (!posts.length) {
-    return <h2>Посты не найдены...</h2>;
-  }
-
   return (
     <div className="post_list">
-      <h2>{title}</h2>
+      <h2>{posts.length ? title : "Посты не найдены.."}</h2>
       <div className="post_list__body">
-        {posts.map((post, index) => (
-          <PostItem
-            number={index + 1}
-            post={post}
-            key={post.id}
-            deletePost={deletePost}
-          />
-        ))}
+        <AnimatePresence>
+          {posts.map((post, index) => (
+            <motion.div
+              key={post.id}
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 100 }}
+              transition={{ duration: 1.0 }}
+            >
+              <PostItem
+                number={index + 1}
+                post={post}
+                deletePost={deletePost}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
