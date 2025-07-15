@@ -1,0 +1,6 @@
+.post_search {
+  margin: 30px 0px;
+  display: flex;
+  column-gap: 30px;
+  width: 50%;
+}

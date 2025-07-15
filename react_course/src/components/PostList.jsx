@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import PostItem from "./PostItem";
 
 export default function PostList({ posts, title, deletePost }) {
+  if (!posts.length) {
+    return <h2>Посты не найдены...</h2>;
+  }
+
   return (
     <div className="post_list">
       <h2>{title}</h2>

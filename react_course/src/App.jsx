@@ -1,36 +1,40 @@
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
+import PostFilter from "./components/PostFilter";
+import { usePosts } from "./hooks/usePosts.js";
 
 function App() {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      title: "JavaScript 1",
-      content:
-        "JavaScript - это язык программирования для разработкий веб-приложений",
+      title: "CCC",
+      body: "aaa",
     },
     {
       id: 2,
-      title: "JavaScript 2",
-      content:
-        "JavaScript - это язык программирования для разработкий веб-приложений",
+      title: "BBB",
+      body: "bbb",
     },
     {
       id: 3,
-      title: "JavaScript 3",
-      content:
-        "JavaScript - это язык программирования для разработкий веб-приложений",
+      title: "AAA",
+      body: "ccc",
     },
   ]);
+
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+
+  const sortedAndSearchedPosts = usePosts(filter.sort, filter.query, posts);
 
   function createPost(post) {
     setPosts([...posts, post]);
   }
 
-  function deletePost(id) {
-    setPosts(posts.filter((post) => post.id != id));
+  function deletePost(post) {
+    setPosts(posts.filter((p) => p.id !== post.id));
   }
 
   return (
@@ -38,15 +42,12 @@ function App() {
       <nav className="navbar"></nav>
       <main className="main-content">
         <PostForm createPost={createPost} />
-        {posts.length ? (
-          <PostList
-            posts={posts}
-            title={"Список постов"}
-            deletePost={deletePost}
-          />
-        ) : (
-          <h2>Посты не найдены...</h2>
-        )}
+        <PostFilter filter={filter} setFilter={setFilter} />
+        <PostList
+          posts={sortedAndSearchedPosts}
+          title={"Список постов"}
+          deletePost={deletePost}
+        />
       </main>
       <footer className="footer"></footer>
     </div>

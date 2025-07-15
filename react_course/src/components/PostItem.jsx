@@ -8,10 +8,10 @@ export default function PostItem({ number, post, deletePost }) {
         <strong>
           {number}. {post.title}
         </strong>
-        <p>{post.content}</p>
+        <p>{post.body}</p>
       </div>
       <div className="post__btns">
-        <MyButton onClick={() => deletePost(post.id)}>Удалить</MyButton>
+        <MyButton onClick={() => deletePost(post)}>Удалить</MyButton>
       </div>
     </div>
   );

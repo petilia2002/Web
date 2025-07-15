@@ -1,0 +1,9 @@
+.mySelect {
+  width: 70%;
+}
+
+/* .mySelect:focus {
+  border-color: tomato;
+  box-shadow: 0 0 0 0.25rem rgba(255, 99, 71, 0.6);
+  outline: none;
+} */

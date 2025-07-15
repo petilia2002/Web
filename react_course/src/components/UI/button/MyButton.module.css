@@ -1,8 +1,8 @@
 .myBtn {
   border: 2px solid tomato;
-  display: block;
   background: transparent;
   cursor: pointer;
   padding: 10px;
   font-size: 14px;
+  color: tomato;
 }
