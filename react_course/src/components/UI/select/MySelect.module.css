@@ -1,5 +1,6 @@
 .mySelect {
-  width: 70%;
+  width: auto;
+  padding: 10px 40px 10px 20px;
 }
 
 /* .mySelect:focus {

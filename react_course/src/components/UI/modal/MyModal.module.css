@@ -1,0 +1,35 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.modal__content {
+  border-radius: 20px;
+  background: #f4f4f4;
+  position: relative;
+  padding: 50px 50px 30px 50px;
+  box-shadow: rgba(255, 99, 71, 0.6) 0px 0px 0px 3px;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 30px;
+  position: absolute;
+  top: -3px;
+  right: 15px;
+}

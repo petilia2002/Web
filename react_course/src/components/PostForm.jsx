@@ -3,13 +3,14 @@ import classes from "../styles/PostForm.module.css";
 import MyInput from "./UI/input/MyInput";
 import MyButton from "./UI/button/MyButton";
 
-export default function PostForm({ createPost }) {
+export default function PostForm({ createPost, setVisible }) {
   const [post, setPost] = useState({ title: "", body: "" });
 
   function handlerClick(e) {
     e.preventDefault();
     createPost({ ...post, id: Date.now() });
     setPost({ title: "", body: "" });
+    setVisible(false);
   }
 
   return (

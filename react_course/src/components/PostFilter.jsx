@@ -2,8 +2,9 @@ import React from "react";
 import classes from "../styles/PostFilter.module.css";
 import MySelect from "./UI/select/MySelect";
 import MyInput from "./UI/input/MyInput";
+import MyButton from "./UI/button/MyButton";
 
-export default function PostFilter({ filter, setFilter }) {
+export default function PostFilter({ filter, setFilter, visible, setVisible }) {
   return (
     <div className={classes.post_search}>
       <MySelect
@@ -20,11 +21,18 @@ export default function PostFilter({ filter, setFilter }) {
       <MyInput
         type="text"
         placeholder="Найти..."
+        className={classes.text_search}
         value={filter.query}
         onChange={(e) => {
           setFilter({ ...filter, query: e.target.value });
         }}
       />
+      <MyButton
+        className={classes.createBtn}
+        onClick={() => setVisible(!visible)}
+      >
+        Создать новый пост
+      </MyButton>
     </div>
   );
 }
