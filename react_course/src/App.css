@@ -19,6 +19,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-style: normal;
+  background: #f4f4f4;
 }
 
 h2 {
@@ -38,13 +39,6 @@ h2 {
   flex: 1;
 }
 
-.navbar {
-  background: tomato;
-  height: 40px;
-  position: sticky;
-  top: 0;
-}
-
 .main-content {
   width: 80%;
   margin: 0 auto;
@@ -55,13 +49,8 @@ h2 {
   row-gap: 40px;
 }
 
-.footer {
-  background: tomato;
-  height: 40px;
-}
-
 .post {
-  border: 3px solid tomato;
+  border: 3px solid #1da1f2;
   display: flex;
   justify-content: space-between;
   align-items: center;

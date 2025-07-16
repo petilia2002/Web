@@ -18,7 +18,8 @@
   background: #f4f4f4;
   position: relative;
   padding: 50px 50px 30px 50px;
-  box-shadow: rgba(255, 99, 71, 0.6) 0px 0px 0px 3px;
+  /* box-shadow: rgba(255, 99, 71, 0.6) 0px 0px 0px 3px; */
+  box-shadow: rgba(29, 161, 242, 0.6) 0px 0px 0px 3px;
   transform: scale(0.8);
   transition: transform 0.5s ease-in-out;
 }

@@ -8,6 +8,8 @@ import { usePosts } from "./hooks/usePosts.js";
 import MyModal from "./components/UI/modal/MyModal.jsx";
 import PostService from "./API/PostService.js";
 import Loader from "./components/UI/loader/Loader.jsx";
+import Navbar from "./components/UI/navbar/Navbar.jsx";
+import Footer from "./components/UI/footer/Footer.jsx";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -51,7 +53,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav className="navbar"></nav>
+      <Navbar />
       <main className="main-content">
         <MyModal visible={modal} setVisible={setModal}>
           <PostForm createPost={createPost} />
@@ -75,7 +77,7 @@ function App() {
           />
         )}
       </main>
-      <footer className="footer"></footer>
+      <Footer />
     </div>
   );
 }
