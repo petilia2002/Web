@@ -19,11 +19,17 @@
   position: relative;
   padding: 50px 50px 30px 50px;
   box-shadow: rgba(255, 99, 71, 0.6) 0px 0px 0px 3px;
+  transform: scale(0.8);
+  transition: transform 0.5s ease-in-out;
 }
 
 .modal.active {
   opacity: 1;
   pointer-events: auto;
+}
+
+.modal.active .modal__content {
+  transform: scale(1);
 }
 
 .close {

@@ -1,8 +1,18 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PostItem from "./PostItem";
+import MessageError from "./UI/error/MessageError.jsx";
+import classes from "../styles/PostList.module.css";
 
-export default function PostList({ posts, title, deletePost }) {
+export default function PostList({ posts, title, deletePost, isError }) {
+  if (isError && !posts.length) {
+    return (
+      <div className={classes.wrapper_msg}>
+        <MessageError text="Не удалось загрузить посты. Пожалуйста, попробуйте позже.." />
+      </div>
+    );
+  }
+
   return (
     <div className="post_list">
       <h2>{posts.length ? title : "Посты не найдены.."}</h2>
