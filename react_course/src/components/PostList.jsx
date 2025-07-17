@@ -5,7 +5,7 @@ import MessageError from "./UI/error/MessageError.jsx";
 import classes from "../styles/PostList.module.css";
 
 export default function PostList({ posts, title, deletePost, isError }) {
-  if (isError && !posts.length) {
+  if (isError) {
     return (
       <div className={classes.wrapper_msg}>
         <MessageError text="Не удалось загрузить посты. Пожалуйста, попробуйте позже.." />

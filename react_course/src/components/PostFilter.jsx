@@ -27,7 +27,10 @@ export default function PostFilter({ filter, setFilter, visible, setVisible }) {
           setFilter({ ...filter, query: e.target.value });
         }}
       />
-      <MyButton className="createBtn" onClick={() => setVisible(!visible)}>
+      <MyButton
+        className={classes.createBtn}
+        onClick={() => setVisible(!visible)}
+      >
         Создать новый пост
       </MyButton>
     </div>

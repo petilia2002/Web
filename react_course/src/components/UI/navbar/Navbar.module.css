@@ -19,12 +19,12 @@
   align-items: center;
 }
 
-/* Контейнер логотипа */
 .logo_wrapper {
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  width: auto;
 }
 
 /* Иконка Twitter (голубая) */
@@ -33,7 +33,6 @@
   transition: transform 0.3s ease;
 }
 
-/* Текст Twitter (красивый шрифт + анимация) */
 .twitter_text {
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -44,14 +43,61 @@
   color: transparent;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
+
+  /* Новый код */
+  display: inline-block;
+  overflow: hidden;
+  width: 100px;
+  white-space: nowrap;
 }
 
 .twitter_icon:hover {
   transform: rotate(15deg);
 }
 
-.twitter_text:hover {
+.twitter_text span {
+  display: inline-block;
+  transition: letter-spacing 0.3s ease;
+}
+
+.twitter_text:hover span {
   letter-spacing: 1px;
+}
+
+.links_container {
+  display: flex;
+  column-gap: 100px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.links {
+  display: flex;
+  column-gap: 50px;
+  flex-shrink: 0;
+}
+
+.links a {
+  color: #0e71c8;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding: 5px 0px;
+}
+
+.links a::after {
+  content: "";
+  background: #0e71c8;
+  height: 2px;
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.links a:hover::after {
+  width: 100%;
 }
 
 .login_icon {
@@ -59,8 +105,63 @@
   cursor: pointer;
   transform: scale(1);
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .login_icon:hover {
   transform: scale(1.1);
+}
+
+/* Скрытие части ссылок при маленькой ширине экрана */
+@media (max-width: 1024px) {
+  .links {
+    column-gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar_container {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .links_container {
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .links {
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 8px;
+    justify-content: flex-start;
+    flex-grow: 1;
+  }
+
+  .links a {
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+  .logo_wrapper {
+    flex-shrink: 0;
+  }
+
+  .login_icon {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .links {
+    display: none; /* Скрываем ссылки вообще */
+  }
+
+  .login_icon {
+    margin-left: auto;
+  }
 }
