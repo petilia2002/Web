@@ -1,12 +1,12 @@
 import React, { forwardRef } from "react";
 import MyButton from "./UI/button/MyButton";
 
-export default function PostItem({ number, post, deletePost }) {
+export default function PostItem({ post, deletePost }) {
   return (
     <div className="post">
       <div className="post__content">
         <strong>
-          {number}. {post.title}
+          {post.id}. {post.title}
         </strong>
         <p>{post.body}</p>
       </div>

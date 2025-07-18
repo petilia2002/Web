@@ -6,6 +6,8 @@ export const useFetching = (callback) => {
 
   const fetching = async (...args) => {
     try {
+      setIsPostsLoaded(false);
+      setIsError(false);
       await callback(...args);
     } catch (e) {
       setIsError(true);

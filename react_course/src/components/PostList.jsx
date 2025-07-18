@@ -26,11 +26,7 @@ export default function PostList({ posts, title, deletePost, isError }) {
               exit={{ opacity: 0, x: 100 }}
               transition={{ duration: 1.0 }}
             >
-              <PostItem
-                number={index + 1}
-                post={post}
-                deletePost={deletePost}
-              />
+              <PostItem post={post} deletePost={deletePost} />
             </motion.div>
           ))}
         </AnimatePresence>

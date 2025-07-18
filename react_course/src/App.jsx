@@ -27,15 +27,13 @@ function App() {
   const sortedAndSearchedPosts = usePosts(filter.sort, filter.query, posts);
 
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
-    const posts = await PostService.getPosts(limit, page);
-    setPosts(posts);
+    const response = await PostService.getPosts(limit, page);
+    setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
+    setPosts(response.data);
   });
 
   useEffect(() => {
     fetching();
-  }, []);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
 
