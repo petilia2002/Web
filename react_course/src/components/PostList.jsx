@@ -14,9 +14,9 @@ export default function PostList({ posts, title, deletePost, isError }) {
   }
 
   return (
-    <div className="post_list">
+    <div className={classes.post_list}>
       <h2>{posts.length ? title : "Посты не найдены.."}</h2>
-      <div className="post_list__body">
+      <div className={classes.post_list__body}>
         <AnimatePresence>
           {posts.map((post, index) => (
             <motion.div

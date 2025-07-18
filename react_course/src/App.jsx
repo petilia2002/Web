@@ -11,6 +11,8 @@ import Loader from "./components/UI/loader/Loader.jsx";
 import Navbar from "./components/UI/navbar/Navbar.jsx";
 import Footer from "./components/UI/footer/Footer.jsx";
 import { useFetching } from "./hooks/useFetching.js";
+import Pagination from "./components/UI/pagination/Pagination.jsx";
+import { getTotalPages } from "./utils/pagination.js";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -18,16 +20,24 @@ function App() {
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
 
+  const [totalPages, setTotalPages] = useState(10);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+
   const sortedAndSearchedPosts = usePosts(filter.sort, filter.query, posts);
 
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
-    const posts = await PostService.getAll();
+    const posts = await PostService.getPosts(limit, page);
     setPosts(posts);
   });
 
   useEffect(() => {
     fetching();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   function createPost(post) {
     setPosts([...posts, post]);
@@ -63,6 +73,7 @@ function App() {
             isError={isError}
           />
         )}
+        <Pagination totalPages={totalPages} page={page} setPage={setPage} />
       </main>
       <Footer />
     </div>

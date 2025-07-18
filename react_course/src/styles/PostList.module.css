@@ -5,3 +5,7 @@
   align-items: center;
   flex: 1;
 }
+
+.post_list {
+  margin-top: 35px;
+}
