@@ -1,0 +1,23 @@
+.navbar {
+  height: 70px;
+  background: #555;
+}
+
+.links_container {
+  width: 80%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 100px;
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+}
+
+.link.active {
+  color: #1da1f2;
+}
