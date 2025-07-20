@@ -24,3 +24,9 @@ h2 {
   text-decoration: none;
   color: #000;
 }
+
+.form {
+  display: flex;
+  column-gap: 15px;
+  margin-bottom: 25px;
+}
