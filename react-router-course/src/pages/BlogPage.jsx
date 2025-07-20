@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import PostForm from "../components/form/PostForm";
 import Filter from "../components/filter/Filter";
+
+/* Нужно указывать полные маршруты в случае,
+если не используешь вложенные роуты! */
 
 export default function BlogPage() {
   const [posts, setPosts] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const query = searchParams.get("query") || "";
   const latest = searchParams.get("latest") === "true";
   const startsWith = latest ? 9 : 1;
 
-  // console.log(searchParams);
-
   useEffect(() => {
-    console.log("Init");
     fetch("https://jsonplaceholder.typicode.com/posts?_limit=10&_page=1")
       .then((response) => response.json())
       .then((json) => setPosts(json));
   }, []);
-
-  console.log("render");
 
   return (
     <>
@@ -40,7 +38,7 @@ export default function BlogPage() {
             ))}
         </div>
       )}
-      <Link to="new" className={"link"}>
+      <Link to="/posts/new" className={"link"}>
         Создать пост
       </Link>
     </>

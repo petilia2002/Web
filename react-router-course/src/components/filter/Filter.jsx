@@ -42,6 +42,7 @@ export default function Filter({ query, latest, setSearchParams }) {
           })
         }
       />
+      New only
     </form>
   );
 }

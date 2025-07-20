@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import "./App.css";
 import Layout from "./components/layout/Layout";
 import AboutPage from "./pages/AboutPage";
@@ -15,13 +15,17 @@ export default function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />}></Route>
-          <Route path="about" element={<AboutPage />}></Route>
-          <Route path="posts" element={<BlogPage />}></Route>
-          <Route path="posts/:id" element={<PostPage />}></Route>
-          <Route path="posts/:id/edit" element={<EditPage />}></Route>
-          <Route path="posts/new" element={<CreatePage />}></Route>
-          <Route path="*" element={<NotFoundPage />}></Route>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />}>
+            <Route path="contacts" element={<p>Наши контакты</p>} />
+            <Route path="team" element={<p>Наша команда</p>} />
+          </Route>
+          <Route path="about-us" element={<Navigate to={"/about"} replace />} />
+          <Route path="posts" element={<BlogPage />} />
+          <Route path="posts/:id" element={<PostPage />} />
+          <Route path="posts/:id/edit" element={<EditPage />} />
+          <Route path="posts/new" element={<CreatePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </>
