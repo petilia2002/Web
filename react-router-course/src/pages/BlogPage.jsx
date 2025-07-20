@@ -10,7 +10,7 @@ export default function BlogPage() {
   const latest = searchParams.get("latest") === "true";
   const startsWith = latest ? 9 : 1;
 
-  console.log(searchParams);
+  // console.log(searchParams);
 
   useEffect(() => {
     console.log("Init");
