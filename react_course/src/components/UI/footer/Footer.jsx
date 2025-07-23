@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import { FaTwitter, FaHeart, FaRegCopyright } from "react-icons/fa";
 import classes from "./Footer.module.css";
 
@@ -8,9 +9,15 @@ export default function Footer() {
       <div className={classes.content}>
         <FaTwitter className={classes.logo} />
         <div className={classes.links}>
-          <a href="/about">О нас</a>
-          <a href="/terms">Условия</a>
-          <a href="/privacy">Конфиденциальность</a>
+          <Link to="/" className={classes.link}>
+            О нас
+          </Link>
+          <Link to="/" className={classes.link}>
+            Условия
+          </Link>
+          <Link to="/" className={classes.link}>
+            Конфиденциальность
+          </Link>
         </div>
         <div className={classes.copyright}>
           <FaRegCopyright className={classes.icon} />

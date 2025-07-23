@@ -9,6 +9,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
+  height: 60px;
 }
 
 .navbar_container {
@@ -77,29 +78,6 @@
   flex-shrink: 0;
 }
 
-.links a {
-  color: #0e71c8;
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-  padding: 5px 0px;
-}
-
-.links a::after {
-  content: "";
-  background: #0e71c8;
-  height: 2px;
-  width: 0;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  transition: all 0.3s ease-in-out;
-}
-
-.links a:hover::after {
-  width: 100%;
-}
-
 .login_icon {
   color: #0e71c8;
   cursor: pointer;
@@ -141,10 +119,10 @@
     flex-grow: 1;
   }
 
-  .links a {
+  /* .link {
     white-space: nowrap;
     font-size: 0.9rem;
-  }
+  } */
 
   .logo_wrapper {
     flex-shrink: 0;

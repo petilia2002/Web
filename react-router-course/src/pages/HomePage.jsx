@@ -4,6 +4,7 @@ import { useLocation } from "react-router";
 export default function HomePage() {
   const location = useLocation();
   // console.log(location);
+  console.log("HomePage");
 
   return (
     <>

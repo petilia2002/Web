@@ -2,6 +2,7 @@ import React from "react";
 import { FaTwitter } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
 import classes from "./Navbar.module.css";
+import CustomLink from "../link/CustomLink.jsx";
 
 export default function Navbar() {
   return (
@@ -15,11 +16,13 @@ export default function Navbar() {
             </span>
           </div>
           <div className={classes.links}>
-            <a href="/home">Главная</a>
-            <a href="/posts">Посты</a>
-            <a href="/communities">Сообщества</a>
-            <a href="/search">Поиск</a>
-            <a href="/about">О нас</a>
+            <CustomLink to="/" exact>
+              Главная
+            </CustomLink>
+            <CustomLink to="/posts">Посты</CustomLink>
+            <CustomLink to="/communities">Сообщества</CustomLink>
+            <CustomLink to="/search">Поиск</CustomLink>
+            <CustomLink to="/about">О нас</CustomLink>
           </div>
         </div>
         <IoLogInOutline className={classes.login_icon} size={28} />
