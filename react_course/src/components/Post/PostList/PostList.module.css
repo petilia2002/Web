@@ -1,0 +1,22 @@
+.post_list {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.post_list__title {
+  text-align: center;
+}
+
+.post_list__content {
+  background: transparent;
+}
+
+.wrapper_msg {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
