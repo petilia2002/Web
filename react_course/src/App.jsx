@@ -8,6 +8,7 @@ import Posts from "./pages/Posts/Posts";
 import About from "./pages/About/About";
 import Search from "./pages/Search/Search";
 import Communities from "./pages/Communities/Communities";
+import Comments from "./pages/Comments/Comments";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path={"/"} element={<Layout />}>
           <Route index element={<Home />} />
           <Route path={"posts"} element={<Posts />} />
+          <Route path={"posts/:id"} element={<Comments />} />
           <Route path={"about"} element={<About />} />
           <Route path={"search"} element={<Search />} />
           <Route path={"communities"} element={<Communities />} />

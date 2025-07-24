@@ -29,7 +29,7 @@ export default function Posts() {
   );
 
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
-    const response = await PostService.getPosts(limit, page);
+    const response = await PostService.getAll(limit, page);
     setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
     setPosts(response.data);
   });

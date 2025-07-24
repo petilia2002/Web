@@ -8,7 +8,7 @@ export default function List({
   condition,
   inThisCase,
   className = "",
-  isAnimate,
+  isAnimate = false,
 }) {
   if (condition !== undefined && !condition) {
     return inThisCase || null;
