@@ -1,0 +1,12 @@
+.user_form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+  align-items: center;
+  width: 500px;
+}
+
+.login_btn {
+  padding: 10px 15px;
+  background: #ccc;
+}

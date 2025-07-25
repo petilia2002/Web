@@ -1,8 +1,8 @@
 import React from "react";
 import { FaTwitter } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
-import CustomLink from "../../UI/CustomLink/CustomLink";
 import classes from "./Navbar.module.css";
+import CustomLink from "../../UI/CustomLink/CustomLink";
 
 export default function Navbar() {
   return (

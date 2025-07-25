@@ -4,11 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Layout from "./pages/Layout/Layout";
 import Home from "./pages/Home/Home";
-import Posts from "./pages/Posts/Posts";
+// import Posts from "./pages/Posts/Posts";
 import About from "./pages/About/About";
 import Search from "./pages/Search/Search";
 import Communities from "./pages/Communities/Communities";
 import Comments from "./pages/Comments/Comments";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
@@ -16,11 +17,12 @@ function App() {
       <Routes>
         <Route path={"/"} element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path={"posts"} element={<Posts />} />
-          <Route path={"posts/:id"} element={<Comments />} />
+          {/* <Route path={"posts"} element={<Posts />} />
+          <Route path={"posts/:id"} element={<Comments />} /> */}
           <Route path={"about"} element={<About />} />
           <Route path={"search"} element={<Search />} />
           <Route path={"communities"} element={<Communities />} />
+          <Route path={"login"} element={<Login />} />
           <Route path={"*"} element={<Navigate to={"/posts"} replace />} />
         </Route>
       </Routes>
