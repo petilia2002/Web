@@ -14,7 +14,9 @@ export default function List({
     return inThisCase || null;
   }
 
-  const listElements = items.map((item, index) => renderItem(item, index));
+  const listElements = items.map((item, index, arr) =>
+    renderItem(item, index, arr)
+  );
 
   return (
     <div className={`${classes.list} ${className}`}>

@@ -5,3 +5,8 @@
   align-items: center;
   flex: 1;
 }
+
+.target {
+  background: red;
+  height: 20px;
+}

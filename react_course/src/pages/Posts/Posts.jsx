@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classes from "./Posts.module.css";
 import PostList from "../../components/Post/PostList/PostList";
 import PostForm from "../../components/Post/PostForm/PostForm";
@@ -21,6 +21,9 @@ export default function Posts() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
 
+  const observerRef = useRef(null);
+  const targetElement = useRef(null);
+
   const sortedAndSearchedPosts = useItems(
     filter.sort,
     "title",
@@ -31,12 +34,45 @@ export default function Posts() {
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page);
     setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
-    setPosts(response.data);
+    // setPosts(response.data);
+    setPosts([...posts, ...response.data]);
   });
 
   useEffect(() => {
+    console.log(`isPostsLoaded: ${isPostsLoaded}`);
+    console.log(`page: ${page}`);
+    if (isPostsLoaded) {
+      const options = {
+        rootMargin: "0px",
+        threshold: 0,
+      };
+
+      const callback = (entries, observer) => {
+        // console.log(entries);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && page < totalPages) {
+            setPage(page + 1);
+            console.log(entries);
+          }
+        });
+      };
+
+      observerRef.current = new IntersectionObserver(callback, options);
+      observerRef.current.observe(targetElement.current);
+    }
+
+    return () => {
+      if (observerRef.current && targetElement.current) {
+        observerRef.current.unobserve(targetElement.current);
+        observerRef.current.disconnect();
+        console.log("CLEAR");
+      }
+    };
+  }, [isPostsLoaded, page]);
+
+  useEffect(() => {
     fetching();
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }, [page]);
 
   function createPost(post) {
@@ -59,17 +95,21 @@ export default function Posts() {
         visible={modal}
         setVisible={setModal}
       />
-      {!isPostsLoaded ? (
+      {!isPostsLoaded && !posts.length ? (
         <div className={classes.wrapper_loader}>
           <Loader />
         </div>
       ) : (
-        <PostList
-          posts={sortedAndSearchedPosts}
-          title={"Список постов"}
-          deletePost={deletePost}
-          isError={isError}
-        />
+        <>
+          <PostList
+            posts={sortedAndSearchedPosts}
+            title={"Список постов"}
+            deletePost={deletePost}
+            isError={isError}
+            ref={targetElement}
+          />
+          {/* <div className={classes.target} ref={targetElement}></div> */}
+        </>
       )}
       <Pagination totalPages={totalPages} page={page} setPage={setPage} />
     </>

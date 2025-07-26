@@ -5,7 +5,7 @@ import Error from "../../../UI/Error/Error";
 import List from "../../List/List";
 import classes from "./PostList.module.css";
 
-export default function PostList({ posts, title, deletePost, isError }) {
+export default function PostList({ posts, title, deletePost, isError, ref }) {
   return (
     <div className={classes.post_list}>
       <h2 className={classes.post_list__title}>
@@ -20,7 +20,7 @@ export default function PostList({ posts, title, deletePost, isError }) {
           </div>
         }
         className={classes.post_list__content}
-        renderItem={(post, index) => (
+        renderItem={(post, index, arr) => (
           <motion.div
             key={post.id}
             initial={{ opacity: 0, x: -100 }}
@@ -28,7 +28,11 @@ export default function PostList({ posts, title, deletePost, isError }) {
             exit={{ opacity: 0, x: 100 }}
             transition={{ duration: 1.0 }}
           >
-            <PostItem post={post} deletePost={deletePost} />
+            <PostItem
+              post={post}
+              deletePost={deletePost}
+              ref={index === arr.length - 1 ? ref : null}
+            />
           </motion.div>
         )}
         isAnimate={true}
