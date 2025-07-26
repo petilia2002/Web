@@ -5,10 +5,8 @@ export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [redirectPath, setRedirectPath] = useState("/login");
   const navigate = useNavigate();
-
-  // console.log("AuthProvider");
-  // console.log(user);
 
   const signin = (user, cb) => {
     setUser(user);
@@ -17,13 +15,12 @@ export default function AuthProvider({ children }) {
 
   const signout = async (cb) => {
     console.log("signout called");
-    navigate("/", { replace: true });
-    // await new Promise((res) => setTimeout(res, 1000));
     setUser(null);
+    setRedirectPath("/");
   };
 
   return (
-    <AuthContext.Provider value={{ user, signin, signout }}>
+    <AuthContext.Provider value={{ user, signin, signout, redirectPath }}>
       {children}
     </AuthContext.Provider>
   );

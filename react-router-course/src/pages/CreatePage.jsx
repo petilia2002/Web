@@ -9,7 +9,9 @@ export default function CreatePage() {
   return (
     <>
       <h2>Create new post</h2>
-      <button onClick={() => signout()}>Выйти</button>
+      <button onClick={() => signout(() => navigate("/", { replace: true }))}>
+        Выйти
+      </button>
     </>
   );
 }

@@ -1,12 +1,19 @@
+.form_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
 .user_form {
   display: flex;
   flex-direction: column;
-  row-gap: 25px;
+  row-gap: 30px;
   align-items: center;
   width: 500px;
 }
 
 .login_btn {
   padding: 10px 15px;
-  background: #ccc;
 }
