@@ -34,14 +34,20 @@ export default function Posts() {
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page);
     setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
-    // setPosts(response.data);
-    setPosts([...posts, ...response.data]);
+    if (page === 1) {
+      setPosts(response.data);
+    } else {
+      setPosts([...posts, ...response.data]);
+    }
   });
 
   useEffect(() => {
     console.log(`isPostsLoaded: ${isPostsLoaded}`);
     console.log(`page: ${page}`);
-    if (isPostsLoaded) {
+
+    const target = targetElement.current;
+
+    if (posts.length === page * limit) {
       const options = {
         rootMargin: "0px",
         threshold: 0,
@@ -52,28 +58,29 @@ export default function Posts() {
         entries.forEach((entry) => {
           if (entry.isIntersecting && page < totalPages) {
             setPage(page + 1);
-            console.log(entries);
+            console.log("Intersection");
+            // console.log(entries);
           }
         });
       };
 
       observerRef.current = new IntersectionObserver(callback, options);
-      observerRef.current.observe(targetElement.current);
+      observerRef.current.observe(target);
     }
 
     return () => {
-      if (observerRef.current && targetElement.current) {
-        observerRef.current.unobserve(targetElement.current);
+      if (observerRef.current && target) {
+        observerRef.current.unobserve(target);
         observerRef.current.disconnect();
         console.log("CLEAR");
       }
     };
-  }, [isPostsLoaded, page]);
+  }, [page, limit, posts, totalPages, observerRef, targetElement]);
 
   useEffect(() => {
     fetching();
     // window.scrollTo(0, 0);
-  }, [page]);
+  }, [page, limit]);
 
   function createPost(post) {
     setPosts([...posts, post]);
@@ -94,8 +101,11 @@ export default function Posts() {
         setFilter={setFilter}
         visible={modal}
         setVisible={setModal}
+        limit={limit}
+        setLimit={setLimit}
+        setPage={setPage}
       />
-      {!isPostsLoaded && !posts.length ? (
+      {!isPostsLoaded && page === 1 ? (
         <div className={classes.wrapper_loader}>
           <Loader />
         </div>

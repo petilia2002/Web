@@ -4,7 +4,15 @@ import MySelect from "../../../UI/MySelect/MySelect";
 import MyInput from "../../../UI/MyInput/MyInput";
 import MyButton from "../../../UI/MyButton/MyButton";
 
-export default function PostFilter({ filter, setFilter, visible, setVisible }) {
+export default function PostFilter({
+  filter,
+  setFilter,
+  visible,
+  setVisible,
+  limit,
+  setLimit,
+  setPage,
+}) {
   return (
     <div className={classes.post_search}>
       <MySelect
@@ -16,6 +24,21 @@ export default function PostFilter({ filter, setFilter, visible, setVisible }) {
         value={filter.sort}
         onChange={(selectedSort) => {
           setFilter({ ...filter, sort: selectedSort });
+        }}
+      />
+      <MySelect
+        defaultValue={"Показывать по:"}
+        options={[
+          { value: 2, name: "2" },
+          { value: 5, name: "5" },
+          { value: 10, name: "10" },
+          { value: 20, name: "20" },
+          { value: -1, name: "Все" },
+        ]}
+        value={limit}
+        onChange={(selectedSort) => {
+          setLimit(Number(selectedSort));
+          setPage(1);
         }}
       />
       <MyInput
