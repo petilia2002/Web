@@ -6,7 +6,7 @@ import { getButtons } from "../../utils/pagination.js";
 
 const GAP_VALUE = 3;
 
-export default function Pagination({ totalPages, page, setPage }) {
+export default function Pagination({ totalPages, page, setPage, setShowMore }) {
   const btnArr = getButtons(totalPages, page, GAP_VALUE);
   return (
     <div className={classes.btn_container}>
@@ -35,7 +35,17 @@ export default function Pagination({ totalPages, page, setPage }) {
           <MdArrowForwardIos className={classes.nextIcon} />
         </div>
       )}
-      <button className={classes.showMore}>Показать ещё</button>
+      {page === totalPages || (
+        <button
+          className={classes.showMore}
+          onClick={() => {
+            setShowMore(true);
+            setPage(page + 1);
+          }}
+        >
+          Показать ещё
+        </button>
+      )}
     </div>
   );
 }

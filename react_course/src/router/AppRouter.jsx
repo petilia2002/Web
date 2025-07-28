@@ -4,15 +4,20 @@ import { useAuth } from "../hoc/AuthProvider";
 import { publicRoutes, privateRoutes } from "./routes";
 import Layout from "../pages/Layout/Layout";
 import Home from "../pages/Home/Home";
+import Loader from "../UI/Loader/Loader";
 
 export default function AppRouter() {
   const { user, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return <Loader />;
+  }
 
   return (
     <Routes>
       <Route path={"/"} element={<Layout />}>
         <Route index element={<Home />} />
-        {user || !isLoaded ? (
+        {user ? (
           <>
             {privateRoutes.map(({ path, element: Component }) => (
               <Route path={path} element={<Component />} key={path} />

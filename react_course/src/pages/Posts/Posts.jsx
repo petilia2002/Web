@@ -23,6 +23,8 @@ export default function Posts() {
   const [isLimitChange, setIsLimitChange] = useState(false);
   const [page, setPage] = useState(1);
 
+  const [showMore, setShowMore] = useState(false);
+
   const targetElement = useRef(null);
 
   const sortedAndSearchedPosts = useItems(
@@ -33,25 +35,34 @@ export default function Posts() {
   );
 
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
-    const response = isLimitChange
-      ? await PostService.getAll(limit * page, 1)
-      : await PostService.getAll(limit, page);
-    setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
-    if (isLimitChange) {
-      setPosts(response.data);
-      setIsLimitChange(false);
-    } else {
+    // Для бесконечного скролла:
+    // const response = isLimitChange
+    //   ? await PostService.getAll(limit * page, 1)
+    //   : await PostService.getAll(limit, page);
+    // setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
+    // if (isLimitChange) {
+    //   setPosts(response.data);
+    //   setIsLimitChange(false);
+    // } else {
+    //   setPosts([...posts, ...response.data]);
+    // }
+    // Для обычной пагинации:
+    const response = await PostService.getAll(limit, page);
+    if (showMore) {
       setPosts([...posts, ...response.data]);
+      setShowMore(false);
+    } else {
+      setPosts([...response.data]);
     }
+    setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
   });
 
-  useObserving(targetElement, isPostsLoaded, page < totalPages, () =>
-    setPage(page + 1)
-  );
+  // useObserving(targetElement, isPostsLoaded, page < totalPages, () =>
+  //   setPage(page + 1)
+  // );
 
   useEffect(() => {
     fetching();
-    // window.scrollTo(0, 0);
   }, [page, limit]);
 
   function createPost(post) {
@@ -65,7 +76,10 @@ export default function Posts() {
 
   function changeLimit(selectedSort) {
     const newLimit = Number(selectedSort);
-    const newPage = newLimit > 0 ? Math.ceil(posts.length / newLimit) : 1;
+    const newPage =
+      newLimit > 0 && posts.length
+        ? Math.ceil(posts[posts.length - 1].id / newLimit)
+        : 1;
     setLimit(newLimit);
     setIsLimitChange(true);
     setPage(newPage);
@@ -84,7 +98,7 @@ export default function Posts() {
         limit={limit}
         changeLimit={changeLimit}
       />
-      {!isPostsLoaded && page === 1 ? (
+      {!isPostsLoaded && !showMore ? (
         <div className={classes.wrapper_loader}>
           <Loader />
         </div>
@@ -97,7 +111,12 @@ export default function Posts() {
           ref={targetElement}
         />
       )}
-      <Pagination totalPages={totalPages} page={page} setPage={setPage} />
+      <Pagination
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+        setShowMore={setShowMore}
+      />
     </>
   );
 }
