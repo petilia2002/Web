@@ -5,6 +5,7 @@ import PostForm from "../../components/Post/PostForm/PostForm";
 import PostFilter from "../../components/Post/PostFilter/PostFilter";
 import { useItems } from "../../hooks/useItems.js";
 import { useFetching } from "../../hooks/useFetching.js";
+import { useObserving } from "../../hooks/useObserving.js";
 import { getTotalPages } from "../../utils/pagination.js";
 import PostService from "../../API/PostService.js";
 import Pagination from "../../UI/Pagination/Pagination";
@@ -19,9 +20,9 @@ export default function Posts() {
 
   const [totalPages, setTotalPages] = useState(10);
   const [limit, setLimit] = useState(10);
+  const [isLimitChange, setIsLimitChange] = useState(false);
   const [page, setPage] = useState(1);
 
-  const observerRef = useRef(null);
   const targetElement = useRef(null);
 
   const sortedAndSearchedPosts = useItems(
@@ -32,50 +33,21 @@ export default function Posts() {
   );
 
   const [fetching, isPostsLoaded, isError] = useFetching(async () => {
-    const response = await PostService.getAll(limit, page);
+    const response = isLimitChange
+      ? await PostService.getAll(limit * page, 1)
+      : await PostService.getAll(limit, page);
     setTotalPages(getTotalPages(response.headers["x-total-count"], limit));
-    if (page === 1) {
+    if (isLimitChange) {
       setPosts(response.data);
+      setIsLimitChange(false);
     } else {
       setPosts([...posts, ...response.data]);
     }
   });
 
-  useEffect(() => {
-    console.log(`isPostsLoaded: ${isPostsLoaded}`);
-    console.log(`page: ${page}`);
-
-    const target = targetElement.current;
-
-    if (posts.length === page * limit) {
-      const options = {
-        rootMargin: "0px",
-        threshold: 0,
-      };
-
-      const callback = (entries, observer) => {
-        // console.log(entries);
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && page < totalPages) {
-            setPage(page + 1);
-            console.log("Intersection");
-            // console.log(entries);
-          }
-        });
-      };
-
-      observerRef.current = new IntersectionObserver(callback, options);
-      observerRef.current.observe(target);
-    }
-
-    return () => {
-      if (observerRef.current && target) {
-        observerRef.current.unobserve(target);
-        observerRef.current.disconnect();
-        console.log("CLEAR");
-      }
-    };
-  }, [page, limit, posts, totalPages, observerRef, targetElement]);
+  useObserving(targetElement, isPostsLoaded, page < totalPages, () =>
+    setPage(page + 1)
+  );
 
   useEffect(() => {
     fetching();
@@ -91,6 +63,14 @@ export default function Posts() {
     setPosts(posts.filter((p) => p.id !== post.id));
   }
 
+  function changeLimit(selectedSort) {
+    const newLimit = Number(selectedSort);
+    const newPage = newLimit > 0 ? Math.ceil(posts.length / newLimit) : 1;
+    setLimit(newLimit);
+    setIsLimitChange(true);
+    setPage(newPage);
+  }
+
   return (
     <>
       <MyModal visible={modal} setVisible={setModal}>
@@ -102,24 +82,20 @@ export default function Posts() {
         visible={modal}
         setVisible={setModal}
         limit={limit}
-        setLimit={setLimit}
-        setPage={setPage}
+        changeLimit={changeLimit}
       />
       {!isPostsLoaded && page === 1 ? (
         <div className={classes.wrapper_loader}>
           <Loader />
         </div>
       ) : (
-        <>
-          <PostList
-            posts={sortedAndSearchedPosts}
-            title={"Список постов"}
-            deletePost={deletePost}
-            isError={isError}
-            ref={targetElement}
-          />
-          {/* <div className={classes.target} ref={targetElement}></div> */}
-        </>
+        <PostList
+          posts={sortedAndSearchedPosts}
+          title={"Список постов"}
+          deletePost={deletePost}
+          isError={isError}
+          ref={targetElement}
+        />
       )}
       <Pagination totalPages={totalPages} page={page} setPage={setPage} />
     </>

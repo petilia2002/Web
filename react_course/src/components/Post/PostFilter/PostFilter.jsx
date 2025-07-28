@@ -10,8 +10,7 @@ export default function PostFilter({
   visible,
   setVisible,
   limit,
-  setLimit,
-  setPage,
+  changeLimit,
 }) {
   return (
     <div className={classes.post_search}>
@@ -36,10 +35,7 @@ export default function PostFilter({
           { value: -1, name: "Все" },
         ]}
         value={limit}
-        onChange={(selectedSort) => {
-          setLimit(Number(selectedSort));
-          setPage(1);
-        }}
+        onChange={(selectedSort) => changeLimit(selectedSort)}
       />
       <MyInput
         type="text"
