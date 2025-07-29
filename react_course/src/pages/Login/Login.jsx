@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MyInput from "../../UI/MyInput/MyInput";
 import MyButton from "../../UI/MyButton/MyButton";
+import LoginForm from "../../components/LoginForm/LoginForm";
 import classes from "./Login.module.css";
 import { useAuth } from "../../hoc/AuthProvider";
 
@@ -16,7 +17,7 @@ export default function Login() {
 
   return (
     <div className={classes.form_container}>
-      <form className={classes.user_form}>
+      {/* <form className={classes.user_form}>
         <MyInput
           type="email"
           name="name"
@@ -34,7 +35,8 @@ export default function Login() {
         <MyButton onClick={handlerClick} className={classes.login_btn}>
           Войти
         </MyButton>
-      </form>
+      </form> */}
+      <LoginForm />
     </div>
   );
 }

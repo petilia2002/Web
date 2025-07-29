@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
+
+.loginForm {
+  width: 100%;
+  max-width: 400px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 20px;
+  flex-shrink: 0;
+}
+
+.formGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.checkGroup {
+  background: transparent;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.formTitle {
+  text-align: center;
+  margin: 0;
+  font-weight: 600;
+}
+
+.loginbtn {
+  align-self: center;
+}
+
+.loginLabel {
+  width: auto;
+}
+
+.passwordInput {
+  font-weight: 900;
+}
