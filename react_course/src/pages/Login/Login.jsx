@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MyInput from "../../UI/MyInput/MyInput";
 import MyButton from "../../UI/MyButton/MyButton";
-import LoginForm from "../../components/LoginForm/LoginForm";
+import LoginForm from "../../components/AuthForm/LoginForm";
 import classes from "./Login.module.css";
 import { useAuth } from "../../hoc/AuthProvider";
 

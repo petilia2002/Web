@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router";
 import LoginInput from "./LoginInput/LoginInput";
 import LoginLabel from "./LoginLabel/LoginLabel";
 import LoginButton from "./LoginButton/LoginButton";
 import Checkbox from "./Checkbox/Checkbox";
-import Radiobox from "./Radiobox/Radiobox";
-import classes from "./LoginForm.module.css";
+import RoleSwitcher from "./RoleSwticher/RoleSwitcher";
+import classes from "./RegisterForm.module.css";
+import { fields } from "./register";
 
 export default function LoginForm() {
+  const [role, setRole] = useState("patient");
+  const [date, setDate] = useState(null);
+  const [formData, setFormData] = useState({});
+
   const handlerSubmit = (e) => {
     e.preventDefault();
   };
 
   return (
     <form className={classes.loginForm} onSubmit={handlerSubmit}>
-      <h4 className={classes.formTitle}>Авторизация</h4>
+      <h4 className={classes.formTitle}>Регистрация</h4>
+      <RoleSwitcher
+        className={classes.registerSwitch}
+        options={[
+          { value: "patient", name: "Пациент" },
+          { value: "doctor", name: "Врач" },
+        ]}
+        selectedRole={role}
+        onSelect={(role) => setRole(role)}
+      />
+      <LoginInput type="date" name="date" id="date" />
       <div className={classes.formGroup}>
         <LoginLabel htmlFor={"email"}>Почта</LoginLabel>
         <LoginInput
@@ -35,16 +51,19 @@ export default function LoginForm() {
           className={classes.passwordInput}
         />
       </div>
-      <div>
-        <Radiobox name="role" id="role" />
-      </div>
       <div className={classes.checkGroup}>
         <Checkbox name="remember" id="remember" />
         <LoginLabel htmlFor="remember" className={classes.loginLabel}>
           Запомнить меня
         </LoginLabel>
       </div>
-      <LoginButton className={classes.loginbtn}>Войти</LoginButton>
+      <LoginButton className={classes.loginbtn}>Создать аккаунт</LoginButton>
+      <div className={classes.linkGroup}>
+        <p className={classes.loginText}>Уже есть аккаунт?</p>
+        <Link to={"/login"} className={classes.loginLink}>
+          Авторизация
+        </Link>
+      </div>
     </form>
   );
 }

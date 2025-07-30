@@ -42,6 +42,7 @@
 
 .loginbtn {
   align-self: center;
+  width: 100%;
 }
 
 .loginLabel {
@@ -50,4 +51,34 @@
 
 .passwordInput {
   font-weight: 900;
+}
+
+.linkGroup {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 5px;
+  width: 100%;
+}
+
+.loginText {
+  margin: 0;
+}
+
+.loginLink {
+  text-decoration: none;
+  outline: none;
+  color: #1da1f2;
+  cursor: pointer;
+}
+
+.loginLink:hover {
+  color: #0d8bd9;
+}
+
+.loginLink:active {
+  color: #0a7abf;
 }
