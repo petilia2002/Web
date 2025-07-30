@@ -8,7 +8,7 @@ import RoleSwitcher from "./RoleSwticher/RoleSwitcher";
 import classes from "./RegisterForm.module.css";
 import { fields } from "./register";
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const [role, setRole] = useState("patient");
   const [date, setDate] = useState(null);
   const [formData, setFormData] = useState({});
@@ -29,27 +29,19 @@ export default function LoginForm() {
         selectedRole={role}
         onSelect={(role) => setRole(role)}
       />
-      <LoginInput type="date" name="date" id="date" />
-      <div className={classes.formGroup}>
-        <LoginLabel htmlFor={"email"}>Почта</LoginLabel>
-        <LoginInput
-          type="email"
-          placeholder="Введите ваш email.."
-          name="email"
-          id="email"
-          autoComplete="email"
-        />
-      </div>
-      <div className={classes.formGroup}>
-        <LoginLabel htmlFor="password">Пароль</LoginLabel>
-        <LoginInput
-          type="password"
-          placeholder="Введите ваш пароль.."
-          name="password"
-          id="password"
-          autoComplete="password"
-          className={classes.passwordInput}
-        />
+      <div className={classes.formGrid}>
+        {fields[role].map((field) => (
+          <div key={field.name} className={classes.formGroup}>
+            <LoginLabel htmlFor={field.name}>{field.label}</LoginLabel>
+            <LoginInput
+              type={field.type}
+              placeholder={field.label}
+              name={field.name}
+              id={field.name}
+              autoComplete={field.name}
+            />
+          </div>
+        ))}
       </div>
       <div className={classes.checkGroup}>
         <Checkbox name="remember" id="remember" />

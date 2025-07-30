@@ -12,6 +12,7 @@ export const fields = {
     { name: "lastName", label: "Фамилия", type: "text" },
     { name: "firstName", label: "Имя", type: "text" },
     { name: "middleName", label: "Отчество", type: "text" },
+    { name: "birthDate", label: "Дата рождения", type: "date" },
     { name: "workplace", label: "Место работы", type: "text" },
     { name: "position", label: "Должность", type: "text" },
     { name: "specialization", label: "Специализация", type: "text" },

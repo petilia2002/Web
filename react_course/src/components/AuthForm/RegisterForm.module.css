@@ -18,6 +18,14 @@
   flex-shrink: 0;
 }
 
+.formGrid {
+  background: #ccc;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
 .formGroup {
   width: 100%;
   display: flex;
