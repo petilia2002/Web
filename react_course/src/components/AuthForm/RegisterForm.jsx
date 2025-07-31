@@ -15,10 +15,17 @@ export default function RegisterForm() {
 
   const handlerSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
   };
 
   return (
-    <form className={classes.loginForm} onSubmit={handlerSubmit}>
+    <form className={classes.registerForm} onSubmit={handlerSubmit}>
+      <div className={classes.linkGroup}>
+        <p className={classes.registerText}>Уже есть аккаунт?</p>
+        <Link to={"/login"} className={classes.registerLink}>
+          Авторизация
+        </Link>
+      </div>
       <h4 className={classes.formTitle}>Регистрация</h4>
       <RoleSwitcher
         className={classes.registerSwitch}
@@ -30,32 +37,65 @@ export default function RegisterForm() {
         onSelect={(role) => setRole(role)}
       />
       <div className={classes.formGrid}>
-        {fields[role].map((field) => (
-          <div key={field.name} className={classes.formGroup}>
-            <LoginLabel htmlFor={field.name}>{field.label}</LoginLabel>
-            <LoginInput
-              type={field.type}
-              placeholder={field.label}
-              name={field.name}
-              id={field.name}
-              autoComplete={field.name}
-            />
-          </div>
-        ))}
+        {fields[role].map((field, index) => {
+          let spanClass = "";
+          if (
+            (index < 6 && role === "doctor") ||
+            (index < 3 && role === "patient")
+          ) {
+            spanClass = classes.span_1;
+          } else {
+            spanClass = classes.span_3;
+          }
+          return (
+            <div
+              key={field.name}
+              className={`${classes.formField} ${spanClass}`}
+            >
+              <LoginLabel htmlFor={field.name}>{field.label}</LoginLabel>
+              <LoginInput
+                type={field.type}
+                placeholder={field.label}
+                name={field.name}
+                id={field.name}
+                autoComplete={field.name}
+                className={
+                  field.name.toLowerCase().includes("password")
+                    ? classes.passwordInput
+                    : ""
+                }
+                value={null}
+                onChange={(e) => setFormData({})}
+              />
+            </div>
+          );
+        })}
       </div>
-      <div className={classes.checkGroup}>
-        <Checkbox name="remember" id="remember" />
-        <LoginLabel htmlFor="remember" className={classes.loginLabel}>
-          Запомнить меня
-        </LoginLabel>
+      <div className={classes.politics}>
+        <div className={classes.checkGroup}>
+          <Checkbox
+            name="politics"
+            id="politics"
+            className={classes.registerCheckbox}
+          />
+          <LoginLabel htmlFor="politics" className={classes.registerLabel}>
+            Согласен с политикой в отношении персональных данных
+          </LoginLabel>
+        </div>
+        <div className={classes.checkGroup}>
+          <Checkbox
+            name="conditions"
+            id="conditions"
+            className={classes.registerCheckbox}
+          />
+          <LoginLabel htmlFor="conditions" className={classes.registerLabel}>
+            Согласен с условиями использования платформы
+          </LoginLabel>
+        </div>
       </div>
-      <LoginButton className={classes.loginbtn}>Создать аккаунт</LoginButton>
-      <div className={classes.linkGroup}>
-        <p className={classes.loginText}>Уже есть аккаунт?</p>
-        <Link to={"/login"} className={classes.loginLink}>
-          Авторизация
-        </Link>
-      </div>
+      <LoginButton className={classes.registerBtn} onClick={handlerSubmit}>
+        Создать аккаунт
+      </LoginButton>
     </form>
   );
 }
