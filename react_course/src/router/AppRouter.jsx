@@ -26,9 +26,13 @@ export default function AppRouter() {
           </>
         ) : (
           <>
-            {publicRoutes.map(({ path, element: Component }) => (
-              <Route path={path} element={<Component />} key={path} />
-            ))}
+            {publicRoutes.map(({ path, element: Component }) =>
+              path === "login" ? (
+                <Route path={path} element={<Component isLogin />} key={path} />
+              ) : (
+                <Route path={path} element={<Component />} key={path} />
+              )
+            )}
             <Route path={"*"} element={<Navigate to={"/login"} replace />} />
           </>
         )}

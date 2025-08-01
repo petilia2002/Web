@@ -21,3 +21,39 @@ export const fields = {
     { name: "confirmPassword", label: "Подтвердите пароль", type: "password" },
   ],
 };
+
+export const sharedFields = [
+  {
+    name: "politics",
+    label: "Согласен с политикой в отношении персональных данных",
+    type: "checkbox",
+  },
+  {
+    name: "conditions",
+    label: "Согласен с условиями использования платформы",
+    type: "checkbox",
+  },
+  {
+    name: "remember",
+    label: "Сохранить данные для быстрого входа",
+    type: "checkbox",
+  },
+];
+
+export const getInitialFormData = (role) => {
+  const personalFields = fields[role].reduce(
+    (acc, field) => {
+      acc[field.name] = "";
+      return acc;
+    },
+    [{}]
+  );
+  const publicFields = sharedFields.reduce(
+    (acc, field) => {
+      acc[field.name] = false;
+      return acc;
+    },
+    [{}]
+  );
+  return { ...personalFields, ...publicFields };
+};

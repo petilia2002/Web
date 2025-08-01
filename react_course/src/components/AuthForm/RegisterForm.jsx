@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router";
 import LoginInput from "./LoginInput/LoginInput";
 import LoginLabel from "./LoginLabel/LoginLabel";
@@ -6,16 +6,20 @@ import LoginButton from "./LoginButton/LoginButton";
 import Checkbox from "./Checkbox/Checkbox";
 import RoleSwitcher from "./RoleSwticher/RoleSwitcher";
 import classes from "./RegisterForm.module.css";
-import { fields } from "./register";
+import { fields, sharedFields, getInitialFormData } from "./register";
 
-export default function RegisterForm() {
+export default function RegisterForm({ registerHandler }) {
   const [role, setRole] = useState("patient");
-  const [date, setDate] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(() => getInitialFormData(role));
+
+  useEffect(() => {
+    setFormData(() => getInitialFormData(role));
+  }, [role]);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    registerHandler(formData);
+    setFormData(getInitialFormData(role));
   };
 
   return (
@@ -64,34 +68,38 @@ export default function RegisterForm() {
                     ? classes.passwordInput
                     : ""
                 }
-                value={null}
-                onChange={(e) => setFormData({})}
+                value={formData[field.name] || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    [field.name]: e.target.value,
+                  }))
+                }
               />
             </div>
           );
         })}
       </div>
       <div className={classes.politics}>
-        <div className={classes.checkGroup}>
-          <Checkbox
-            name="politics"
-            id="politics"
-            className={classes.registerCheckbox}
-          />
-          <LoginLabel htmlFor="politics" className={classes.registerLabel}>
-            Согласен с политикой в отношении персональных данных
-          </LoginLabel>
-        </div>
-        <div className={classes.checkGroup}>
-          <Checkbox
-            name="conditions"
-            id="conditions"
-            className={classes.registerCheckbox}
-          />
-          <LoginLabel htmlFor="conditions" className={classes.registerLabel}>
-            Согласен с условиями использования платформы
-          </LoginLabel>
-        </div>
+        {sharedFields.map((field) => (
+          <div key={field.name} className={classes.checkGroup}>
+            <Checkbox
+              name={field.name}
+              id={field.name}
+              className={classes.registerCheckbox}
+              checked={formData[field.name]}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  [field.name]: e.target.checked,
+                }))
+              }
+            />
+            <LoginLabel htmlFor={field.name} className={classes.registerLabel}>
+              {field.label}
+            </LoginLabel>
+          </div>
+        ))}
       </div>
       <LoginButton className={classes.registerBtn} onClick={handlerSubmit}>
         Создать аккаунт

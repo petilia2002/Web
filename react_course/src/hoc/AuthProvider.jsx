@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const login = (user) => {
-    localStorage.setItem("user", user?.name);
+    if (user.remember) localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
   };
 
