@@ -20,11 +20,8 @@ export const fields = [
 ];
 
 export const getInitialLoginData = () => {
-  return fields.reduce(
-    (acc, field) => {
-      acc[field.name] = field.type === "checkbox" ? false : "";
-      return acc;
-    },
-    [{}]
-  );
+  return fields.reduce((acc, field) => {
+    acc[field.name] = field.type === "checkbox" ? false : "";
+    return acc;
+  }, {});
 };

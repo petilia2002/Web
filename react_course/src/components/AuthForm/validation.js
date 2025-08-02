@@ -1,11 +1,3 @@
-export const validationConfig = {
-  email: [validEmail],
-  password: [isEmpty, isContainSpaces, validLength(4, 8)],
-  text: [isEmpty],
-  date: [isEmpty],
-  checkbox: [isChecked],
-};
-
 const validEmail = (value) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
   if (!emailRegex.test(value)) {
@@ -42,4 +34,12 @@ const isContainSpaces = (value) => {
     return "Поле не может содержать пробельных символов";
   }
   return null;
+};
+
+export const validationConfig = {
+  email: [validEmail],
+  password: [isEmpty, isContainSpaces, validLength(4, 8)],
+  text: [isEmpty],
+  date: [isEmpty],
+  checkbox: [isChecked],
 };

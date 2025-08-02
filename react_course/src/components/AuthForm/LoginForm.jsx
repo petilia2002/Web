@@ -11,39 +11,58 @@ import { validationConfig } from "./validation";
 export default function LoginForm({ loginHandler }) {
   const [formData, setFormData] = useState(getInitialLoginData);
   const [errors, setErrors] = useState({});
-  const [formValid, setFormValid] = useState(false);
-  const [isDirty, setIsDirty] = useState(false);
+  const [isDirtyMap, setIsDirtyMap] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const validateField = (name, value) => {};
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    const errorMessage = validateField(e.target.name, e.target.value);
-    setErrors((prev) => ({ ...prev, [e.target.name]: errorMessage }));
+  const validateField = (type, value) => {
+    for (let validator of validationConfig[type]) {
+      const result = validator(value);
+      if (result) {
+        return result;
+      }
+    }
+    return null;
   };
 
-  const handleBlur = () => {
-    setIsDirty(true);
+  const isFormValid = () => {
+    return Object.values(errors).every((errorMsg) => !errorMsg);
+  };
+
+  const handleChange = (e) => {
+    const { name, type, value, checked } = e.target;
+    const fieldValue = type === "checkbox" ? checked : value;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: fieldValue,
+    }));
+
+    const errorMessage = validateField(type, fieldValue);
+    setErrors((prev) => ({ ...prev, [name]: errorMessage }));
+  };
+
+  const handleBlur = (e) => {
+    setIsDirtyMap((prev) => ({ ...prev, [e.target.name]: true }));
   };
 
   const resetForm = () => {
     setFormData(getInitialLoginData());
     setErrors({});
-    setFormValid(false);
-    setIsDirty(false);
+    setIsDirtyMap({});
+    setIsSubmitted(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginHandler(formData);
-    setFormData(getInitialLoginData());
+    if (isFormValid()) {
+      loginHandler(formData);
+      resetForm();
+    }
+    setIsSubmitted(true);
   };
 
   return (
-    <form className={classes.loginForm} onSubmit={handleSubmit}>
+    <form className={classes.loginForm}>
       <h4 className={classes.formTitle}>Авторизация</h4>
       {fields
         .filter((item) => item.type !== "checkbox")
@@ -56,33 +75,48 @@ export default function LoginForm({ loginHandler }) {
               name={field.name}
               id={field.name}
               autoComplete={field.name}
-              className={field.name === "password" ? classes.passwordInput : ""}
+              className={
+                field.name === "password"
+                  ? `${classes.formInput} ${classes.passwordInput}`
+                  : classes.formInput
+              }
               value={formData[field.name]}
               onChange={handleChange}
+              onBlur={handleBlur}
             />
+            <div className={classes.errorContainer}>
+              <p className={classes.errorMsg}>
+                {(isDirtyMap[field.name] || isSubmitted) && errors[field.name]}
+              </p>
+            </div>
           </div>
         ))}
       {fields
         .filter((item) => item.type === "checkbox")
         .map((field) => (
-          <div className={classes.checkGroup} key={field.name}>
-            <Checkbox
-              name={field.name}
-              id={field.name}
-              checked={formData[field.name]}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  [field.name]: e.target.checked,
-                }))
-              }
-            />
-            <LoginLabel htmlFor={field.name} className={classes.loginLabel}>
-              {field.label}
-            </LoginLabel>
+          <div className={classes.formGroup} key={field.name}>
+            <div className={classes.checkGroup}>
+              <Checkbox
+                name={field.name}
+                id={field.name}
+                checked={formData[field.name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <LoginLabel htmlFor={field.name} className={classes.loginLabel}>
+                {field.label}
+              </LoginLabel>
+            </div>
+            <div className={classes.errorContainer}>
+              <p className={classes.errorMsg}>
+                {(isDirtyMap[field.name] || isSubmitted) && errors[field.name]}
+              </p>
+            </div>
           </div>
         ))}
-      <LoginButton className={classes.loginbtn}>Войти</LoginButton>
+      <LoginButton className={classes.loginbtn} onClick={handleSubmit}>
+        Войти
+      </LoginButton>
       <div className={classes.linkGroup}>
         <p className={classes.loginText}>Еще нет аккаунта?</p>
         <Link to={"/registration"} className={classes.loginLink}>
