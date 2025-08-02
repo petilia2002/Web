@@ -6,18 +6,44 @@ import LoginButton from "./LoginButton/LoginButton";
 import Checkbox from "./Checkbox/Checkbox";
 import classes from "./LoginForm.module.css";
 import { fields, getInitialLoginData } from "./auth";
+import { validationConfig } from "./validation";
 
 export default function LoginForm({ loginHandler }) {
   const [formData, setFormData] = useState(getInitialLoginData);
+  const [errors, setErrors] = useState({});
+  const [formValid, setFormValid] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
 
-  const handlerSubmit = (e) => {
+  const validateField = (name, value) => {};
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+    const errorMessage = validateField(e.target.name, e.target.value);
+    setErrors((prev) => ({ ...prev, [e.target.name]: errorMessage }));
+  };
+
+  const handleBlur = () => {
+    setIsDirty(true);
+  };
+
+  const resetForm = () => {
+    setFormData(getInitialLoginData());
+    setErrors({});
+    setFormValid(false);
+    setIsDirty(false);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     loginHandler(formData);
     setFormData(getInitialLoginData());
   };
 
   return (
-    <form className={classes.loginForm} onSubmit={handlerSubmit}>
+    <form className={classes.loginForm} onSubmit={handleSubmit}>
       <h4 className={classes.formTitle}>Авторизация</h4>
       {fields
         .filter((item) => item.type !== "checkbox")
@@ -32,12 +58,7 @@ export default function LoginForm({ loginHandler }) {
               autoComplete={field.name}
               className={field.name === "password" ? classes.passwordInput : ""}
               value={formData[field.name]}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  [field.name]: e.target.value,
-                }))
-              }
+              onChange={handleChange}
             />
           </div>
         ))}
