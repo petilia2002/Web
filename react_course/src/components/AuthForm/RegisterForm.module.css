@@ -30,6 +30,19 @@
   row-gap: 10px;
 }
 
+.errorContainer {
+  width: 100%;
+  min-height: 24px;
+}
+
+.errorMsg {
+  color: red;
+  font-size: 12px;
+  line-height: 0;
+  font-weight: 500;
+  display: inline;
+}
+
 .span_1 {
   grid-column: span 2;
 }

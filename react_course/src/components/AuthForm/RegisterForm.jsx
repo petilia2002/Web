@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router";
 import LoginInput from "./LoginInput/LoginInput";
 import LoginLabel from "./LoginLabel/LoginLabel";
@@ -8,6 +8,7 @@ import RoleSwitcher from "./RoleSwticher/RoleSwitcher";
 import classes from "./RegisterForm.module.css";
 import {
   fields,
+  sharedFields,
   getInitialFormData,
   fieldValidators,
   formValidators,
@@ -16,6 +17,11 @@ import { useValidation } from "../../hooks/useValidation";
 
 export default function RegisterForm({ registerHandler }) {
   const [role, setRole] = useState("patient");
+  // const memoizedInputFields = useMemo(
+  //   () => [...fields[role], ...sharedFields],
+  //   [role]
+  // );
+  // const initialFormData = useMemo(() => getInitialFormData(role), [role]);
 
   const {
     formData,
@@ -27,22 +33,22 @@ export default function RegisterForm({ registerHandler }) {
     handleSubmit,
     resetForm,
   } = useValidation(
-    fields,
+    [...fields[role], ...sharedFields],
     () => getInitialFormData(role),
     fieldValidators,
     formValidators,
-    {},
     () => {
       registerHandler(formData);
-    }
+    },
+    role
   );
 
-  useEffect(() => {
-    resetForm(getInitialFormData(role));
-  }, [role]);
+  // useEffect(() => {
+  //   resetForm(getInitialFormData(role));
+  // }, [role]);
 
   return (
-    <form className={classes.registerForm} onSubmit={handlerSubmit}>
+    <form className={classes.registerForm}>
       <div className={classes.linkGroup}>
         <p className={classes.registerText}>Уже есть аккаунт?</p>
         <Link to={"/login"} className={classes.registerLink}>
@@ -88,13 +94,15 @@ export default function RegisterForm({ registerHandler }) {
                     : ""
                 }
                 value={formData[field.name] || ""}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    [field.name]: e.target.value,
-                  }))
-                }
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
+              <div className={classes.errorContainer}>
+                <p className={classes.errorMsg}>
+                  {(isDirtyMap[field.name] || isSubmitted) &&
+                    errors[field.name]}
+                </p>
+              </div>
             </div>
           );
         })}
@@ -107,20 +115,21 @@ export default function RegisterForm({ registerHandler }) {
               id={field.name}
               className={classes.registerCheckbox}
               checked={formData[field.name]}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  [field.name]: e.target.checked,
-                }))
-              }
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <LoginLabel htmlFor={field.name} className={classes.registerLabel}>
               {field.label}
             </LoginLabel>
+            <div className={classes.errorContainer}>
+              <p className={classes.errorMsg}>
+                {(isDirtyMap[field.name] || isSubmitted) && errors[field.name]}
+              </p>
+            </div>
           </div>
         ))}
       </div>
-      <LoginButton className={classes.registerBtn} onClick={handlerSubmit}>
+      <LoginButton className={classes.registerBtn} onClick={handleSubmit}>
         Создать аккаунт
       </LoginButton>
     </form>

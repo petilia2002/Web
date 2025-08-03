@@ -19,14 +19,14 @@ export const fields = [
     label: "Пароль",
     type: "password",
     placeholder: "Введите ваш пароль..",
-    autocomplete: "current-password",
+    autocomplete: "new-password",
   },
   {
     name: "remember",
     label: "Запомнить меня",
     type: "checkbox",
     placeholder: false,
-    autocomplete: "remember",
+    autocomplete: "off",
   },
 ];
 

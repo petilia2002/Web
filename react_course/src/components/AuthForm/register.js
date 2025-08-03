@@ -138,34 +138,34 @@ export const sharedFields = [
     name: "politics",
     label: "Согласен с политикой в отношении персональных данных",
     type: "checkbox",
+    placeholder: false,
+    autocomplete: "off",
   },
   {
     name: "conditions",
     label: "Согласен с условиями использования платформы",
     type: "checkbox",
+    placeholder: false,
+    autocomplete: "off",
   },
   {
     name: "remember",
     label: "Сохранить данные для быстрого входа",
     type: "checkbox",
+    placeholder: false,
+    autocomplete: "off",
   },
 ];
 
 export const getInitialFormData = (role) => {
-  const personalFields = fields[role].reduce(
-    (acc, field) => {
-      acc[field.name] = "";
-      return acc;
-    },
-    [{}]
-  );
-  const publicFields = sharedFields.reduce(
-    (acc, field) => {
-      acc[field.name] = false;
-      return acc;
-    },
-    [{}]
-  );
+  const personalFields = fields[role].reduce((acc, field) => {
+    acc[field.name] = "";
+    return acc;
+  }, {});
+  const publicFields = sharedFields.reduce((acc, field) => {
+    acc[field.name] = false;
+    return acc;
+  }, {});
   return { ...personalFields, ...publicFields };
 };
 

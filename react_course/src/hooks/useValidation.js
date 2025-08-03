@@ -5,23 +5,30 @@ export const useValidation = (
   getInitialData,
   fieldValidators,
   formValidators,
-  callback
+  callback,
+  role
 ) => {
   const [formData, setFormData] = useState(getInitialData);
   const [errors, setErrors] = useState({});
   const [isDirtyMap, setIsDirtyMap] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  console.log(inputFields);
+
   useEffect(() => {
+    const initialData = getInitialData();
     const newErrors = {};
     inputFields.forEach((field) => {
-      const error = validateField(field.type, formData[field.name]);
+      const error = validateField(field.type, initialData[field.name]);
       if (error) {
         newErrors[field.name] = error;
       }
     });
+    setFormData(initialData);
     setErrors(newErrors);
-  }, []);
+    setIsDirtyMap({});
+    setIsSubmitted(false);
+  }, [role]);
 
   const validateField = (type, value) => {
     for (let validator of fieldValidators[type]) {
@@ -57,7 +64,6 @@ export const useValidation = (
       ...prev,
       [name]: fieldValue,
     }));
-
     const errorMessage = validateField(type, fieldValue);
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
   };
