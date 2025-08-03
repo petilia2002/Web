@@ -1,24 +1,135 @@
+import {
+  isEmpty,
+  isChecked,
+  validLength,
+  validEmail,
+  isContainSpaces,
+  isMatchPasswords,
+} from "../../utils/validation";
+
 export const fields = {
   patient: [
-    { name: "lastName", label: "Фамилия", type: "text" },
-    { name: "firstName", label: "Имя", type: "text" },
-    { name: "middleName", label: "Отчество", type: "text" },
-    { name: "birthDate", label: "Дата рождения", type: "date" },
-    { name: "email", label: "Почта", type: "email" },
-    { name: "password", label: "Пароль", type: "password" },
-    { name: "confirmPassword", label: "Подтвердите пароль", type: "password" },
+    {
+      name: "lastName",
+      label: "Фамилия",
+      type: "text",
+      placeholder: "Фамилия",
+      autocomplete: "family-name",
+    },
+    {
+      name: "firstName",
+      label: "Имя",
+      type: "text",
+      placeholder: "Имя",
+      autocomplete: "given-name",
+    },
+    {
+      name: "middleName",
+      label: "Отчество",
+      type: "text",
+      placeholder: "Отчество",
+      autocomplete: "additional-name",
+    },
+    {
+      name: "birthDate",
+      label: "Дата рождения",
+      type: "date",
+      placeholder: "Дата рождения",
+      autocomplete: "bdate",
+    },
+    {
+      name: "email",
+      label: "Почта",
+      type: "email",
+      placeholder: "Почта",
+      autocomplete: "email",
+    },
+    {
+      name: "password",
+      label: "Пароль",
+      type: "password",
+      placeholder: "Пароль",
+      autocomplete: "new-password",
+    },
+    {
+      name: "confirmPassword",
+      label: "Подтвердите пароль",
+      type: "password",
+      placeholder: "Подтвердите пароль",
+      autocomplete: "new-password",
+    },
   ],
   doctor: [
-    { name: "lastName", label: "Фамилия", type: "text" },
-    { name: "firstName", label: "Имя", type: "text" },
-    { name: "middleName", label: "Отчество", type: "text" },
-    { name: "birthDate", label: "Дата рождения", type: "date" },
-    { name: "workplace", label: "Место работы", type: "text" },
-    { name: "position", label: "Должность", type: "text" },
-    { name: "specialization", label: "Специализация", type: "text" },
-    { name: "email", label: "Почта", type: "email" },
-    { name: "password", label: "Пароль", type: "password" },
-    { name: "confirmPassword", label: "Подтвердите пароль", type: "password" },
+    {
+      name: "lastName",
+      label: "Фамилия",
+      type: "text",
+      placeholder: "Фамилия",
+      autocomplete: "family-name",
+    },
+    {
+      name: "firstName",
+      label: "Имя",
+      type: "text",
+      placeholder: "Имя",
+      autocomplete: "given-name",
+    },
+    {
+      name: "middleName",
+      label: "Отчество",
+      type: "text",
+      placeholder: "Отчество",
+      autocomplete: "additional-name",
+    },
+    {
+      name: "birthDate",
+      label: "Дата рождения",
+      type: "date",
+      placeholder: "Дата рождения",
+      autocomplete: "bdate",
+    },
+    {
+      name: "workplace",
+      label: "Место работы",
+      type: "text",
+      placeholder: "Дата рождения",
+      autocomplete: "organization",
+    },
+    {
+      name: "position",
+      label: "Должность",
+      type: "text",
+      placeholder: "Дата рождения",
+      autocomplete: "off",
+    },
+    {
+      name: "specialization",
+      label: "Специализация",
+      type: "text",
+      placeholder: "Дата рождения",
+      autocomplete: "off",
+    },
+    {
+      name: "email",
+      label: "Почта",
+      type: "email",
+      placeholder: "Почта",
+      autocomplete: "email",
+    },
+    {
+      name: "password",
+      label: "Пароль",
+      type: "password",
+      placeholder: "Пароль",
+      autocomplete: "new-password",
+    },
+    {
+      name: "confirmPassword",
+      label: "Подтвердите пароль",
+      type: "password",
+      placeholder: "Подтвердите пароль",
+      autocomplete: "new-password",
+    },
   ],
 };
 
@@ -56,4 +167,16 @@ export const getInitialFormData = (role) => {
     [{}]
   );
   return { ...personalFields, ...publicFields };
+};
+
+export const formValidators = {
+  passwordsMatch: isMatchPasswords("password", "confirmPassword"),
+};
+
+export const fieldValidators = {
+  email: [validEmail],
+  password: [isEmpty, isContainSpaces, validLength(4, 8)],
+  text: [isEmpty],
+  date: [isEmpty],
+  checkbox: [isChecked],
 };

@@ -6,21 +6,40 @@ import LoginButton from "./LoginButton/LoginButton";
 import Checkbox from "./Checkbox/Checkbox";
 import RoleSwitcher from "./RoleSwticher/RoleSwitcher";
 import classes from "./RegisterForm.module.css";
-import { fields, sharedFields, getInitialFormData } from "./register";
+import {
+  fields,
+  getInitialFormData,
+  fieldValidators,
+  formValidators,
+} from "./register";
+import { useValidation } from "../../hooks/useValidation";
 
 export default function RegisterForm({ registerHandler }) {
   const [role, setRole] = useState("patient");
-  const [formData, setFormData] = useState(() => getInitialFormData(role));
+
+  const {
+    formData,
+    errors,
+    isDirtyMap,
+    isSubmitted,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    resetForm,
+  } = useValidation(
+    fields,
+    () => getInitialFormData(role),
+    fieldValidators,
+    formValidators,
+    {},
+    () => {
+      registerHandler(formData);
+    }
+  );
 
   useEffect(() => {
-    setFormData(() => getInitialFormData(role));
+    resetForm(getInitialFormData(role));
   }, [role]);
-
-  const handlerSubmit = (e) => {
-    e.preventDefault();
-    registerHandler(formData);
-    setFormData(getInitialFormData(role));
-  };
 
   return (
     <form className={classes.registerForm} onSubmit={handlerSubmit}>
