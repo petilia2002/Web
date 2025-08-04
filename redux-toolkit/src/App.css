@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f4f4;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.app {
+  margin-top: 100px;
+}
+
+ul {
+  list-style: none;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.close {
+  color: red;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.todo {
+  display: flex;
+  column-gap: 15px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.textSpan {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.textSpan.completed {
+  text-decoration: line-through;
+}
