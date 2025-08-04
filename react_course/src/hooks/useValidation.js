@@ -13,13 +13,11 @@ export const useValidation = (
   const [isDirtyMap, setIsDirtyMap] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  console.log(inputFields);
-
   useEffect(() => {
     const initialData = getInitialData();
     const newErrors = {};
     inputFields.forEach((field) => {
-      const error = validateField(field.type, initialData[field.name]);
+      const error = validateField(field.name, initialData[field.name]);
       if (error) {
         newErrors[field.name] = error;
       }
@@ -30,8 +28,8 @@ export const useValidation = (
     setIsSubmitted(false);
   }, [role]);
 
-  const validateField = (type, value) => {
-    for (let validator of fieldValidators[type]) {
+  const validateField = (name, value) => {
+    for (let validator of fieldValidators[name]) {
       const result = validator(value);
       if (result) {
         return result;
@@ -64,7 +62,7 @@ export const useValidation = (
       ...prev,
       [name]: fieldValue,
     }));
-    const errorMessage = validateField(type, fieldValue);
+    const errorMessage = validateField(name, fieldValue);
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
   };
 
@@ -100,6 +98,5 @@ export const useValidation = (
     handleChange,
     handleBlur,
     handleSubmit,
-    resetForm,
   };
 };

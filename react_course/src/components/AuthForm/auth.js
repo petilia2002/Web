@@ -40,7 +40,5 @@ export const getInitialLoginData = () => {
 export const fieldValidators = {
   email: [validEmail],
   password: [isEmpty, isContainSpaces, validLength(4, 8)],
-  text: [isEmpty],
-  date: [isEmpty],
-  checkbox: [isChecked],
+  remember: [],
 };

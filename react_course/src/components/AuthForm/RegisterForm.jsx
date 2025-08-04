@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
 import LoginInput from "./LoginInput/LoginInput";
 import LoginLabel from "./LoginLabel/LoginLabel";
@@ -17,11 +17,7 @@ import { useValidation } from "../../hooks/useValidation";
 
 export default function RegisterForm({ registerHandler }) {
   const [role, setRole] = useState("patient");
-  // const memoizedInputFields = useMemo(
-  //   () => [...fields[role], ...sharedFields],
-  //   [role]
-  // );
-  // const initialFormData = useMemo(() => getInitialFormData(role), [role]);
+  const inputFields = [...fields[role], ...sharedFields];
 
   const {
     formData,
@@ -31,9 +27,8 @@ export default function RegisterForm({ registerHandler }) {
     handleChange,
     handleBlur,
     handleSubmit,
-    resetForm,
   } = useValidation(
-    [...fields[role], ...sharedFields],
+    inputFields,
     () => getInitialFormData(role),
     fieldValidators,
     formValidators,
@@ -43,9 +38,11 @@ export default function RegisterForm({ registerHandler }) {
     role
   );
 
-  // useEffect(() => {
-  //   resetForm(getInitialFormData(role));
-  // }, [role]);
+  function handleRoleChange(newRole) {
+    if (newRole !== role) {
+      setRole(newRole);
+    }
+  }
 
   return (
     <form className={classes.registerForm}>
@@ -63,40 +60,73 @@ export default function RegisterForm({ registerHandler }) {
           { value: "doctor", name: "Врач" },
         ]}
         selectedRole={role}
-        onSelect={(role) => setRole(role)}
+        onSelect={(newRole) => handleRoleChange(newRole)}
       />
       <div className={classes.formGrid}>
-        {fields[role].map((field, index) => {
-          let spanClass = "";
-          if (
-            (index < 6 && role === "doctor") ||
-            (index < 3 && role === "patient")
-          ) {
-            spanClass = classes.span_1;
-          } else {
-            spanClass = classes.span_3;
-          }
-          return (
-            <div
-              key={field.name}
-              className={`${classes.formField} ${spanClass}`}
-            >
-              <LoginLabel htmlFor={field.name}>{field.label}</LoginLabel>
-              <LoginInput
-                type={field.type}
-                placeholder={field.label}
-                name={field.name}
-                id={field.name}
-                autoComplete={field.name}
-                className={
-                  field.name.toLowerCase().includes("password")
-                    ? classes.passwordInput
-                    : ""
-                }
-                value={formData[field.name] || ""}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
+        {inputFields
+          .filter((item) => item.type !== "checkbox")
+          .map((field, index) => {
+            let spanClass = "";
+            if (
+              (index < 6 && role === "doctor") ||
+              (index < 3 && role === "patient")
+            ) {
+              spanClass = classes.span_1;
+            } else {
+              spanClass = classes.span_3;
+            }
+            return (
+              <div
+                key={field.name}
+                className={`${classes.formField} ${spanClass}`}
+              >
+                <LoginLabel htmlFor={field.name}>{field.label}</LoginLabel>
+                <LoginInput
+                  type={field.type}
+                  placeholder={field.label}
+                  name={field.name}
+                  id={field.name}
+                  autoComplete={field.name}
+                  className={
+                    field.name.toLowerCase().includes("password")
+                      ? `${classes.passwordInput} ${classes.formInput}`
+                      : classes.formInput
+                  }
+                  value={formData[field.name] || ""}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className={classes.errorContainer}>
+                  <p className={classes.errorMsg}>
+                    {(isDirtyMap[field.name] || isSubmitted) &&
+                      errors[field.name]}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+      </div>
+      <div className={classes.politics}>
+        {inputFields
+          .filter((item) => item.type === "checkbox")
+          .map((field) => (
+            <div className={classes.checkContainer} key={field.name}>
+              <div className={classes.checkGroup}>
+                <Checkbox
+                  name={field.name}
+                  id={field.name}
+                  className={classes.registerCheckbox}
+                  checked={formData[field.name]}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <LoginLabel
+                  htmlFor={field.name}
+                  className={classes.registerLabel}
+                >
+                  {field.label}
+                </LoginLabel>
+              </div>
               <div className={classes.errorContainer}>
                 <p className={classes.errorMsg}>
                   {(isDirtyMap[field.name] || isSubmitted) &&
@@ -104,30 +134,7 @@ export default function RegisterForm({ registerHandler }) {
                 </p>
               </div>
             </div>
-          );
-        })}
-      </div>
-      <div className={classes.politics}>
-        {sharedFields.map((field) => (
-          <div key={field.name} className={classes.checkGroup}>
-            <Checkbox
-              name={field.name}
-              id={field.name}
-              className={classes.registerCheckbox}
-              checked={formData[field.name]}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            <LoginLabel htmlFor={field.name} className={classes.registerLabel}>
-              {field.label}
-            </LoginLabel>
-            <div className={classes.errorContainer}>
-              <p className={classes.errorMsg}>
-                {(isDirtyMap[field.name] || isSubmitted) && errors[field.name]}
-              </p>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
       <LoginButton className={classes.registerBtn} onClick={handleSubmit}>
         Создать аккаунт

@@ -30,34 +30,6 @@ export const fields = {
       placeholder: "Отчество",
       autocomplete: "additional-name",
     },
-    {
-      name: "birthDate",
-      label: "Дата рождения",
-      type: "date",
-      placeholder: "Дата рождения",
-      autocomplete: "bdate",
-    },
-    {
-      name: "email",
-      label: "Почта",
-      type: "email",
-      placeholder: "Почта",
-      autocomplete: "email",
-    },
-    {
-      name: "password",
-      label: "Пароль",
-      type: "password",
-      placeholder: "Пароль",
-      autocomplete: "new-password",
-    },
-    {
-      name: "confirmPassword",
-      label: "Подтвердите пароль",
-      type: "password",
-      placeholder: "Подтвердите пароль",
-      autocomplete: "new-password",
-    },
   ],
   doctor: [
     {
@@ -82,58 +54,58 @@ export const fields = {
       autocomplete: "additional-name",
     },
     {
-      name: "birthDate",
-      label: "Дата рождения",
-      type: "date",
-      placeholder: "Дата рождения",
-      autocomplete: "bdate",
-    },
-    {
       name: "workplace",
       label: "Место работы",
       type: "text",
-      placeholder: "Дата рождения",
+      placeholder: "Место работы",
       autocomplete: "organization",
     },
     {
       name: "position",
       label: "Должность",
       type: "text",
-      placeholder: "Дата рождения",
+      placeholder: "Должность",
       autocomplete: "off",
     },
     {
       name: "specialization",
       label: "Специализация",
       type: "text",
-      placeholder: "Дата рождения",
+      placeholder: "Специализация",
       autocomplete: "off",
-    },
-    {
-      name: "email",
-      label: "Почта",
-      type: "email",
-      placeholder: "Почта",
-      autocomplete: "email",
-    },
-    {
-      name: "password",
-      label: "Пароль",
-      type: "password",
-      placeholder: "Пароль",
-      autocomplete: "new-password",
-    },
-    {
-      name: "confirmPassword",
-      label: "Подтвердите пароль",
-      type: "password",
-      placeholder: "Подтвердите пароль",
-      autocomplete: "new-password",
     },
   ],
 };
 
 export const sharedFields = [
+  {
+    name: "birthDate",
+    label: "Дата рождения",
+    type: "date",
+    placeholder: "Дата рождения",
+    autocomplete: "bdate",
+  },
+  {
+    name: "email",
+    label: "Почта",
+    type: "email",
+    placeholder: "Почта",
+    autocomplete: "email",
+  },
+  {
+    name: "password",
+    label: "Пароль",
+    type: "password",
+    placeholder: "Пароль",
+    autocomplete: "new-password",
+  },
+  {
+    name: "confirmPassword",
+    label: "Подтвердите пароль",
+    type: "password",
+    placeholder: "Подтвердите пароль",
+    autocomplete: "new-password",
+  },
   {
     name: "politics",
     label: "Согласен с политикой в отношении персональных данных",
@@ -159,11 +131,11 @@ export const sharedFields = [
 
 export const getInitialFormData = (role) => {
   const personalFields = fields[role].reduce((acc, field) => {
-    acc[field.name] = "";
+    acc[field.name] = field.type === "checkbox" ? false : "";
     return acc;
   }, {});
   const publicFields = sharedFields.reduce((acc, field) => {
-    acc[field.name] = false;
+    acc[field.name] = field.type === "checkbox" ? false : "";
     return acc;
   }, {});
   return { ...personalFields, ...publicFields };
@@ -174,9 +146,17 @@ export const formValidators = {
 };
 
 export const fieldValidators = {
+  lastName: [isEmpty, validLength(2, 24)],
+  firstName: [isEmpty, validLength(2, 24)],
+  middleName: [isEmpty, validLength(2, 24)],
+  birthDate: [isEmpty],
   email: [validEmail],
   password: [isEmpty, isContainSpaces, validLength(4, 8)],
-  text: [isEmpty],
-  date: [isEmpty],
-  checkbox: [isChecked],
+  workplace: [isEmpty, validLength(4, 50)],
+  position: [isEmpty, validLength(4, 50)],
+  specialization: [isEmpty, validLength(4, 50)],
+  confirmPassword: [isEmpty, isContainSpaces, validLength(4, 8)],
+  politics: [isChecked],
+  conditions: [isChecked],
+  remember: [],
 };
