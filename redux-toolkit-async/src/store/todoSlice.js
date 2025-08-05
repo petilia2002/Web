@@ -1,0 +1,150 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchTodos = createAsyncThunk(
+  "todos/fetchTodos",
+  async function (limit, { rejectWithValue }) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos?_limit=${limit}`
+      );
+      if (!response.ok) {
+        throw new Error("Can't fetch todos");
+      }
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const deleteTodo = createAsyncThunk(
+  "todos/deleteTodo",
+  async function (todoId, { rejectWithValue, dispatch }) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${todoId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Can't delete todo");
+      }
+      dispatch(removeTodo({ id: todoId }));
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const toggleTodo = createAsyncThunk(
+  "todos/toggleTodo",
+  async function (todoId, { rejectWithValue, dispatch, getState }) {
+    const todo = getState().todos.todos.find((item) => item.id === todoId);
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${todoId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            completed: !todo.completed,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Can't update todo");
+      }
+      dispatch(toggleTodoCompleted({ id: todoId }));
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const addNewTodo = createAsyncThunk(
+  "todos/addNewTodo",
+  async function (text, { rejectWithValue, dispatch }) {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: 1,
+            title: text,
+            completed: false,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Can't create todo");
+      }
+      const data = await response.json();
+      dispatch(addTodo({ ...data, id: Date.now() }));
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+const handleResolved = (state, action) => {
+  state.status = "resolved";
+};
+const handlePending = (state) => {
+  state.status = "loading";
+  state.error = null;
+};
+const handleRejected = (state, action) => {
+  state.status = "rejected";
+  state.error = action.payload;
+};
+
+export const todoSlice = createSlice({
+  name: "todos",
+  initialState: { todos: [], status: null, error: null },
+  reducers: {
+    addTodo(state, action) {
+      state.todos.push(action.payload);
+    },
+
+    toggleTodoCompleted(state, action) {
+      const toggledTodo = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      if (toggledTodo) {
+        toggledTodo.completed = !toggledTodo.completed;
+      }
+    },
+
+    removeTodo(state, action) {
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTodos.pending, handlePending);
+    builder.addCase(fetchTodos.fulfilled, (state, action) => {
+      state.status = "resolved";
+      state.todos = action.payload;
+    });
+    builder.addCase(fetchTodos.rejected, handleRejected);
+
+    builder.addCase(deleteTodo.fulfilled, handleResolved);
+    builder.addCase(deleteTodo.rejected, handleRejected);
+
+    builder.addCase(toggleTodo.fulfilled, handleResolved);
+    builder.addCase(toggleTodo.rejected, handleRejected);
+
+    builder.addCase(addNewTodo.fulfilled, handleResolved);
+    builder.addCase(addNewTodo.rejected, handleRejected);
+  },
+});
+
+export const { addTodo, toggleTodoCompleted, removeTodo } = todoSlice.actions;
+export default todoSlice.reducer;

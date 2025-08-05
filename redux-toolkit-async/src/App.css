@@ -1,0 +1,59 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f4f4;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  overflow: auto;
+}
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.close {
+  color: red;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.formTodos {
+  margin-top: 100px;
+}
+
+.todo {
+  display: flex;
+  column-gap: 15px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.textSpan {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.textSpan.completed {
+  text-decoration: line-through;
+}
