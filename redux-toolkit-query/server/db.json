@@ -1,0 +1,19 @@
+{
+  "goods": [
+    {
+      "id": "1",
+      "name": "Milk",
+      "completed": false
+    },
+    {
+      "id": "2",
+      "name": "Bread",
+      "completed": false
+    },
+    {
+      "id": "3",
+      "name": "Ice Cream",
+      "completed": false
+    }
+  ]
+}
