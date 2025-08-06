@@ -5,7 +5,6 @@ export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [redirectPath, setRedirectPath] = useState("/login");
   const navigate = useNavigate();
 
   const signin = (user, cb) => {
@@ -14,13 +13,13 @@ export default function AuthProvider({ children }) {
   };
 
   const signout = async (cb) => {
-    console.log("signout called");
+    cb();
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos");
     setUser(null);
-    setRedirectPath("/");
   };
 
   return (
-    <AuthContext.Provider value={{ user, signin, signout, redirectPath }}>
+    <AuthContext.Provider value={{ user, signin, signout }}>
       {children}
     </AuthContext.Provider>
   );
