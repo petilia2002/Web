@@ -1,0 +1,30 @@
+.com_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  row-gap: 50px;
+  align-items: center;
+  flex: 1;
+}
+
+.post_title {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-family: 24;
+  font-weight: 500;
+  margin: 0;
+}
+
+.comments {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}

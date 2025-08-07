@@ -1,0 +1,24 @@
+.pageBtn {
+  background: transparent;
+  border-radius: 50%;
+  padding: 5px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  flex-shrink: 0;
+}
+
+.pageBtn:hover {
+  color: #0d8ddb;
+  background: rgba(13, 141, 219, 0.2);
+}
+
+.pageBtn.active {
+  color: #555;
+  background: rgba(204, 204, 204, 0.5);
+}
