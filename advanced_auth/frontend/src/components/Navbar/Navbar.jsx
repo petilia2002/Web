@@ -4,18 +4,21 @@ import { FaTwitter } from "react-icons/fa";
 import { IoLogInOutline, IoLogOutOutline } from "react-icons/io5";
 import classes from "./Navbar.module.css";
 import CustomLink from "../../UI/CustomLink/CustomLink";
-import { useAuth } from "../../hoc/AuthProvider";
+import { useDispatch } from "react-redux";
+import { useAuth } from "../../store/useAuth";
+import { logout } from "../../store/authSlice";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const dispatch = useDispatch();
+  const { isAuth } = useAuth();
 
   const loginHandler = () => {
     navigate("/login");
   };
 
   const logoutHandler = () => {
-    logout();
+    dispatch(logout());
     navigate("/", { replace: true });
   };
 
@@ -39,7 +42,7 @@ export default function Navbar() {
             <CustomLink to="/about">О нас</CustomLink>
           </div>
         </div>
-        {user ? (
+        {isAuth ? (
           <IoLogOutOutline
             className={classes.logout_icon}
             size={28}

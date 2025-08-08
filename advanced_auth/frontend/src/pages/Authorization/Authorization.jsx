@@ -2,13 +2,13 @@ import React from "react";
 import RegisterForm from "../../components/AuthForm/RegisterForm";
 import LoginForm from "../../components/AuthForm/LoginForm";
 import classes from "./Authorization.module.css";
-import { useAuth } from "../../hoc/AuthProvider";
+// import { useAuth } from "../../hoc/AuthProvider";
 
 export default function Authorization({ isLogin }) {
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   function authHandler(user) {
-    login(user);
+    // login(user);
   }
 
   return (

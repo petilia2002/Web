@@ -24,5 +24,8 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
         except Exception as e:
             return JSONResponse(
                 status_code=500,
-                content={"message": "Sorry, something went wrong...", "error": str(e)},
+                content={
+                    "message": "Извините, что-то пошло не так...",
+                    "error": str(e),
+                },
             )

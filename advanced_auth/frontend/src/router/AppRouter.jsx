@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router";
-import { useAuth } from "../hoc/AuthProvider";
 import Layout from "../pages/Layout/Layout";
 import Home from "../pages/Home/Home";
 import Loader from "../UI/Loader/Loader";
@@ -11,11 +10,12 @@ import Communities from "../pages/Communities/Communities";
 import Comments from "../pages/Comments/Comments";
 import Authorization from "../pages/Authorization/Authorization";
 import RequireAuth from "../hoc/RequireAuth";
+import { useAuth } from "../store/useAuth";
 
 export default function AppRouter() {
-  const { user, isLoaded } = useAuth();
+  const { isLoading } = useAuth();
 
-  if (!isLoaded) {
+  if (isLoading) {
     return <Loader />;
   }
 

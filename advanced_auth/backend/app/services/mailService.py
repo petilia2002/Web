@@ -30,7 +30,7 @@ class MailService:
 
         fm = FastMail(self.conf)
         await fm.send_message(message)
-        return {"Message": "The email was sent successfully"}
+        return {"Message": "Письмо успешно отправлено"}
 
 
 mailService = MailService()

@@ -1,16 +1,15 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./store/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import AuthProvider from "./hoc/AuthProvider";
 import ApiRouter from "./router/AppRouter";
 
 function App() {
   return (
-    <>
-      <AuthProvider>
-        <ApiRouter />
-      </AuthProvider>
-    </>
+    <Provider store={store}>
+      <ApiRouter />
+    </Provider>
   );
 }
 
