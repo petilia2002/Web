@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router";
 import Layout from "../pages/Layout/Layout";
 import Home from "../pages/Home/Home";
@@ -10,13 +10,20 @@ import Communities from "../pages/Communities/Communities";
 import Comments from "../pages/Comments/Comments";
 import Authorization from "../pages/Authorization/Authorization";
 import RequireAuth from "../hoc/RequireAuth";
+import { useDispatch } from "react-redux";
+import { checkAuth } from "../store/authSlice";
 import { useAuth } from "../store/useAuth";
 
 export default function AppRouter() {
-  const { isLoading } = useAuth();
+  const { isAuthChecked } = useAuth();
+  const dispatch = useDispatch();
 
-  if (isLoading) {
-    return <Loader />;
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, []);
+
+  if (!isAuthChecked) {
+    return null;
   }
 
   return (

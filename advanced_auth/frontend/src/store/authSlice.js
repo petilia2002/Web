@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
     } catch (e) {
       console.log(e);
       // console.log(e.response.data.message);
-      return rejectWithValue(e.message);
+      return rejectWithValue(e.response.data.message);
     }
   }
 );
@@ -29,7 +29,7 @@ export const registration = createAsyncThunk(
     } catch (e) {
       console.log(e);
       // console.log(e.response.data.message);
-      return rejectWithValue(e.message);
+      return rejectWithValue(e.response.data.message);
     }
   }
 );
@@ -44,7 +44,7 @@ export const logout = createAsyncThunk(
       return { message: result.data.message };
     } catch (e) {
       console.log(e);
-      return rejectWithValue(e.message);
+      return rejectWithValue(e.response.data.message);
     }
   }
 );
@@ -61,55 +61,73 @@ export const checkAuth = createAsyncThunk(
     } catch (e) {
       console.log(e);
       // console.log(e.response.data.message);
-      return rejectWithValue(e.message);
+      return rejectWithValue(e.response.data.message);
     }
   }
 );
 
-const handlePending = (state) => {
-  state.isLoading = true;
+const handlePendingAuthorization = (state) => {
+  state.isLoaded = false;
+  state.error = null;
+  console.log("login.pending -> isLoaded:", state.isLoaded);
+};
+
+const handlePendingCheck = (state) => {
+  state.isAuthChecked = false;
   state.error = null;
 };
 
 const handleRejected = (state, action) => {
-  state.isLoading = false;
+  state.isLoaded = true;
   state.error = action.payload;
-};
-
-const handleAuthSuccess = (state, action) => {
-  state.user = action.payload.user;
-  state.isAuth = true;
-  state.isLoading = false;
 };
 
 const handleLogoutSuccess = (state) => {
   state.user = null;
   state.isAuth = false;
-  state.isLoading = false;
+  state.isLoaded = true;
 };
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: { user: null, isAuth: false, isLoading: false, error: null },
+  initialState: {
+    user: null,
+    isAuth: false,
+    isAuthChecked: false,
+    isLoaded: true,
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.pending, handlePending);
-    builder.addCase(login.fulfilled, handleAuthSuccess);
+    builder.addCase(login.pending, handlePendingAuthorization);
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+      state.isAuth = true;
+      state.isLoaded = true;
+      console.log("login.fulfilled -> isLoaded:", state.isLoaded);
+    });
     builder.addCase(login.rejected, handleRejected);
 
-    builder.addCase(registration.pending, handlePending);
-    builder.addCase(registration.fulfilled, handleAuthSuccess);
+    builder.addCase(registration.pending, handlePendingAuthorization);
+    builder.addCase(registration.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+      state.isAuth = true;
+      state.isLoaded = true;
+    });
     builder.addCase(registration.rejected, handleRejected);
 
-    builder.addCase(logout.pending, handlePending);
     builder.addCase(logout.fulfilled, handleLogoutSuccess);
     builder.addCase(logout.rejected, handleRejected);
 
-    builder.addCase(checkAuth.pending, handlePending);
-    builder.addCase(checkAuth.fulfilled, handleAuthSuccess);
+    builder.addCase(checkAuth.pending, handlePendingCheck);
+    builder.addCase(checkAuth.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+      state.isAuth = true;
+      state.isAuthChecked = true;
+    });
     builder.addCase(checkAuth.rejected, (state, action) => {
       state.isAuth = false;
-      state.isLoading = false;
+      state.isAuthChecked = true;
       state.user = null;
       state.error = action.payload;
     });

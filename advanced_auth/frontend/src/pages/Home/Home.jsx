@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { login, registration, logout, checkAuth } from "../../store/authSlice";
+import AuthService from "../../API/AuthService";
 import UserService from "../../API/UserService";
-import MyButton from "../../UI/MyButton/MyButton";
 import LoginButton from "../../components/AuthForm/LoginButton/LoginButton";
 import classes from "./Home.module.css";
 
@@ -29,7 +29,9 @@ export default function Home() {
           </LoginButton>
           <LoginButton
             onClick={() =>
-              dispatch(login({ email: "petnat2008yandex.ru", password: "123" }))
+              dispatch(
+                login({ email: "petnat2008@yandex.ru", password: "1234" })
+              )
             }
             className={classes.homeBtn}
           >
@@ -42,7 +44,14 @@ export default function Home() {
             Выйти
           </LoginButton>
           <LoginButton
-            onClick={() => dispatch(checkAuth())}
+            onClick={async () => {
+              try {
+                const result = await AuthService.refresh();
+                console.log(result);
+              } catch (e) {
+                console.log(e.message, e.status);
+              }
+            }}
             className={classes.homeBtn}
           >
             Обновить токен
@@ -59,36 +68,6 @@ export default function Home() {
             className={classes.homeBtn}
           >
             Пользователи
-          </LoginButton>
-          <LoginButton
-            onClick={() => dispatch(logout())}
-            className={classes.homeBtn}
-          >
-            Выйти
-          </LoginButton>
-          <LoginButton
-            onClick={() => dispatch(logout())}
-            className={classes.homeBtn}
-          >
-            Выйти
-          </LoginButton>
-          <LoginButton
-            onClick={() => dispatch(logout())}
-            className={classes.homeBtn}
-          >
-            Выйти
-          </LoginButton>
-          <LoginButton
-            onClick={() => dispatch(logout())}
-            className={classes.homeBtn}
-          >
-            Выйти
-          </LoginButton>
-          <LoginButton
-            onClick={() => dispatch(logout())}
-            className={classes.homeBtn}
-          >
-            Выйти
           </LoginButton>
         </div>
       </div>

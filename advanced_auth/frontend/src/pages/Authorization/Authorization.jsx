@@ -1,22 +1,44 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router";
+import { useDispatch } from "react-redux";
+import { login, registration } from "../../store/authSlice";
 import RegisterForm from "../../components/AuthForm/RegisterForm";
 import LoginForm from "../../components/AuthForm/LoginForm";
 import classes from "./Authorization.module.css";
-// import { useAuth } from "../../hoc/AuthProvider";
 
 export default function Authorization({ isLogin }) {
-  // const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fromPathnameRef = useRef(null);
+  const dispatch = useDispatch();
 
-  function authHandler(user) {
-    // login(user);
+  useEffect(() => {
+    console.log("INIT Authorization");
+    fromPathnameRef.current = location.state?.from || "/";
+    return () => {
+      console.log("UNMOUNT Authorization");
+    };
+  }, []);
+
+  function loginHandler(user) {
+    dispatch(login(user));
+    // navigate(fromPathnameRef.current, { replace: true });
+    // dispatch(login(user)).then(() => {
+    //   navigate(fromPathnameRef.current, { replace: true });
+    // });
+  }
+
+  function registerHandler(user) {
+    dispatch(registration({ email: user.email, password: user.password }));
+    navigate(fromPathnameRef.current, { replace: true });
   }
 
   return (
     <div className={classes.form_container}>
       {isLogin ? (
-        <LoginForm loginHandler={authHandler} />
+        <LoginForm loginHandler={loginHandler} />
       ) : (
-        <RegisterForm registerHandler={authHandler} />
+        <RegisterForm registerHandler={registerHandler} />
       )}
     </div>
   );

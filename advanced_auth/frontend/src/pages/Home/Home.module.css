@@ -2,66 +2,33 @@
   color: #0e71c8;
   font-size: 32px;
   font-weight: 500;
-  margin: 0px 0px 20px 0px;
+  margin: 0;
+  text-align: center;
 }
 
 .home_box {
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 15px;
   justify-content: center;
   align-items: center;
-  max-width: 600px;
 }
-
-/* .btns_box {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  column-gap: 15px;
-  flex-wrap: wrap;
-}
-
-.homeBtn {
-  flex: 1;
-  width: 144px;
-  font-weight: 500;
-  padding: 15px 15px;
-} */
 
 .btns_box {
   display: flex;
-  flex-wrap: wrap; /* Разрешаем перенос на новую строку */
-  gap: 10px; /* Отступы между кнопками */
+  flex-wrap: wrap;
+  gap: 15px;
   max-width: 600px;
   padding: 10px;
-  background: #ccc; /* Для наглядности */
-  justify-content: flex-start; /* Выравнивание по левому краю */
+  justify-content: center;
   align-items: center;
 }
 
 .homeBtn {
-  /* flex: 1 0 calc(33.33% - 10px); */
-  /* min-width: 100px; */
   padding: 10px 15px;
-  /* white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; */
-  flex: 1 0 calc(33.33% - 10px);
-  flex: 1;
   white-space: nowrap;
-  /* flex: 1 0 150px; */
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 150px;
+  font-weight: 500;
 }
-
-/* @media (max-width: 768px) {
-  .homeBtn {
-    flex: 1 0 calc(50% - 10px);
-  }
-}
-
-@media (max-width: 500px) {
-  .homeBtn {
-    flex: 1 0 calc(100% - 10px);
-  }
-} */
