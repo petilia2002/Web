@@ -21,9 +21,10 @@ httpClient.interceptors.request.use((config) => {
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = { ...error.config };
+    const originalRequest = error.config;
     originalRequest._isRetry = true;
     if (
+      error.response &&
       error.response.status === 401 &&
       error.config &&
       !error.config._isRetry
@@ -38,7 +39,6 @@ httpClient.interceptors.response.use(
         localStorage.removeItem("token");
         const message = e.response?.data?.message;
         return Promise.reject(new AuthError(message, e.response?.status));
-        // return Promise.reject(e);
       }
     }
     return Promise.reject(error);

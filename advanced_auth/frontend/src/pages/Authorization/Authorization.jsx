@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { useDispatch } from "react-redux";
 import { login, registration } from "../../store/authSlice";
@@ -11,6 +11,10 @@ export default function Authorization({ isLogin }) {
   const location = useLocation();
   const fromPathnameRef = useRef(null);
   const dispatch = useDispatch();
+  const [serverError, setServerError] = useState({
+    login: "",
+    registration: "",
+  });
 
   useEffect(() => {
     console.log("INIT Authorization");
@@ -20,12 +24,19 @@ export default function Authorization({ isLogin }) {
     };
   }, []);
 
-  function loginHandler(user) {
-    dispatch(login(user));
+  async function loginHandler(user) {
+    try {
+      const result = await dispatch(login(user)).unwrap();
+      console.log(result);
+      console.log("navigate()");
+      navigate(fromPathnameRef.current, { replace: true });
+    } catch (e) {
+      console.log(e);
+      const message =
+        typeof e === "string" ? e : "Что-то пошло не так. Попробуйте позже..";
+      setServerError((prev) => ({ ...prev, login: message }));
+    }
     // navigate(fromPathnameRef.current, { replace: true });
-    // dispatch(login(user)).then(() => {
-    //   navigate(fromPathnameRef.current, { replace: true });
-    // });
   }
 
   function registerHandler(user) {
@@ -36,9 +47,15 @@ export default function Authorization({ isLogin }) {
   return (
     <div className={classes.form_container}>
       {isLogin ? (
-        <LoginForm loginHandler={loginHandler} />
+        <LoginForm
+          loginHandler={loginHandler}
+          serverError={serverError.login}
+        />
       ) : (
-        <RegisterForm registerHandler={registerHandler} />
+        <RegisterForm
+          registerHandler={registerHandler}
+          serverError={serverError.registration}
+        />
       )}
     </div>
   );

@@ -7,8 +7,9 @@ import Checkbox from "./Checkbox/Checkbox";
 import classes from "./LoginForm.module.css";
 import { fields, getInitialLoginData, fieldValidators } from "./auth";
 import { useValidation } from "../../hooks/useValidation";
+import { useAuth } from "../../store/useAuth";
 
-export default function LoginForm({ loginHandler }) {
+export default function LoginForm({ loginHandler, serverError }) {
   const {
     formData,
     errors,
@@ -20,6 +21,8 @@ export default function LoginForm({ loginHandler }) {
   } = useValidation(fields, getInitialLoginData, fieldValidators, {}, () => {
     loginHandler(formData);
   });
+
+  const { login, registration } = useAuth();
 
   return (
     <form className={classes.loginForm}>
@@ -77,6 +80,9 @@ export default function LoginForm({ loginHandler }) {
       <LoginButton className={classes.loginbtn} onClick={handleSubmit}>
         Войти
       </LoginButton>
+      <div className={classes.serverErrorCont}>
+        <p className={classes.serverError}>{serverError}</p>
+      </div>
       <div className={classes.linkGroup}>
         <p className={classes.loginText}>Еще нет аккаунта?</p>
         <Link to={"/registration"} className={classes.loginLink}>

@@ -17,7 +17,7 @@
 .btns_box {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 20px;
   max-width: 600px;
   padding: 10px;
   justify-content: center;

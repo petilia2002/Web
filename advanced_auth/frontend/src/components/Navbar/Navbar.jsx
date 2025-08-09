@@ -7,6 +7,7 @@ import CustomLink from "../../UI/CustomLink/CustomLink";
 import { useDispatch } from "react-redux";
 import { useAuth } from "../../store/useAuth";
 import { logout } from "../../store/authSlice";
+// import { message } from "antd";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ export default function Navbar() {
   const logoutHandler = () => {
     dispatch(logout());
     navigate("/", { replace: true });
+    // message.success("Успешный выход!");
+    alert("Успешный выход!");
   };
 
   return (

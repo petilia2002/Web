@@ -71,7 +71,7 @@ export const useValidation = (
   };
 
   const resetForm = (initialData) => {
-    setFormData(initialData);
+    // setFormData(initialData);
     setErrors({});
     setIsDirtyMap({});
     setIsSubmitted(false);

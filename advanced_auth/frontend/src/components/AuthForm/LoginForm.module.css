@@ -8,7 +8,7 @@
   font-style: normal;
   font-optical-sizing: auto;
   background: #fff;
-  padding: 40px;
+  padding: 40px 40px 35px 40px;
   border-radius: 15px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   display: flex;
@@ -98,4 +98,21 @@
 
 .loginLink:active {
   color: #0a7abf;
+}
+
+.serverErrorCont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.serverError {
+  height: 10px;
+  color: red;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  margin: 0;
 }

@@ -66,26 +66,31 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
-const handlePendingAuthorization = (state) => {
-  state.isLoaded = false;
-  state.error = null;
-  console.log("login.pending -> isLoaded:", state.isLoaded);
+const createRequestState = () => ({
+  isLoaded: true,
+  error: null,
+});
+
+const setPending = (state, method) => {
+  state[method].isLoaded = false;
+  state[method].error = null;
 };
 
-const handlePendingCheck = (state) => {
-  state.isAuthChecked = false;
-  state.error = null;
+const setRejected = (state, method, action) => {
+  state[method].isLoaded = true;
+  state[method].error = action.payload;
 };
 
-const handleRejected = (state, action) => {
-  state.isLoaded = true;
-  state.error = action.payload;
+const setAuthSuccess = (state, method, action) => {
+  state.user = action.payload.user;
+  state.isAuth = true;
+  state[method].isLoaded = true;
 };
 
-const handleLogoutSuccess = (state) => {
+const setLogoutSuccess = (state, method) => {
   state.user = null;
   state.isAuth = false;
-  state.isLoaded = true;
+  state[method].isLoaded = true;
 };
 
 export const authSlice = createSlice({
@@ -94,43 +99,60 @@ export const authSlice = createSlice({
     user: null,
     isAuth: false,
     isAuthChecked: false,
-    isLoaded: true,
-    error: null,
+    isAuthError: null,
+    login: createRequestState(),
+    registration: createRequestState(),
+    logout: createRequestState(),
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.pending, handlePendingAuthorization);
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.isAuth = true;
-      state.isLoaded = true;
-      console.log("login.fulfilled -> isLoaded:", state.isLoaded);
-    });
-    builder.addCase(login.rejected, handleRejected);
+    // LOGIN
+    builder
+      .addCase(login.pending, (state) => setPending(state, "login"))
+      .addCase(login.fulfilled, (state, action) =>
+        setAuthSuccess(state, "login", action)
+      )
+      .addCase(login.rejected, (state, action) =>
+        setRejected(state, "login", action)
+      );
 
-    builder.addCase(registration.pending, handlePendingAuthorization);
-    builder.addCase(registration.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.isAuth = true;
-      state.isLoaded = true;
-    });
-    builder.addCase(registration.rejected, handleRejected);
+    // REGISTRATION
+    builder
+      .addCase(registration.pending, (state) =>
+        setPending(state, "registration")
+      )
+      .addCase(registration.fulfilled, (state, action) =>
+        setAuthSuccess(state, "registration", action)
+      )
+      .addCase(registration.rejected, (state, action) =>
+        setRejected(state, "registration", action)
+      );
 
-    builder.addCase(logout.fulfilled, handleLogoutSuccess);
-    builder.addCase(logout.rejected, handleRejected);
+    // LOGOUT
+    builder
+      .addCase(logout.pending, (state) => setPending(state, "logout"))
+      .addCase(logout.fulfilled, (state) => setLogoutSuccess(state, "logout"))
+      .addCase(logout.rejected, (state, action) =>
+        setRejected(state, "logout", action)
+      );
 
-    builder.addCase(checkAuth.pending, handlePendingCheck);
-    builder.addCase(checkAuth.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.isAuth = true;
-      state.isAuthChecked = true;
-    });
-    builder.addCase(checkAuth.rejected, (state, action) => {
-      state.isAuth = false;
-      state.isAuthChecked = true;
-      state.user = null;
-      state.error = action.payload;
-    });
+    // CHECK AUTH
+    builder
+      .addCase(checkAuth.pending, (state) => {
+        state.isAuthChecked = false;
+        state.isAuthError = null;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.isAuth = true;
+        state.isAuthChecked = true;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.user = null;
+        state.isAuth = false;
+        state.isAuthChecked = true;
+        state.isAuthError = action.payload;
+      });
   },
 });
 
