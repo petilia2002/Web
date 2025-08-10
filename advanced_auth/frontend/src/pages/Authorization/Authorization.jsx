@@ -5,6 +5,7 @@ import { login, registration } from "../../store/authSlice";
 import RegisterForm from "../../components/AuthForm/RegisterForm";
 import LoginForm from "../../components/AuthForm/LoginForm";
 import classes from "./Authorization.module.css";
+import { message } from "antd";
 
 export default function Authorization({ isLogin }) {
   const navigate = useNavigate();
@@ -17,31 +18,29 @@ export default function Authorization({ isLogin }) {
   });
 
   useEffect(() => {
-    console.log("INIT Authorization");
     fromPathnameRef.current = location.state?.from || "/";
-    return () => {
-      console.log("UNMOUNT Authorization");
-    };
   }, []);
 
   async function loginHandler(user) {
     try {
       const result = await dispatch(login(user)).unwrap();
-      console.log(result);
-      console.log("navigate()");
       navigate(fromPathnameRef.current, { replace: true });
     } catch (e) {
-      console.log(e);
-      const message =
-        typeof e === "string" ? e : "Что-то пошло не так. Попробуйте позже..";
-      setServerError((prev) => ({ ...prev, login: message }));
+      message.error(e);
+      setServerError((prev) => ({ ...prev, login: e }));
     }
-    // navigate(fromPathnameRef.current, { replace: true });
   }
 
-  function registerHandler(user) {
-    dispatch(registration({ email: user.email, password: user.password }));
-    navigate(fromPathnameRef.current, { replace: true });
+  async function registerHandler(user) {
+    try {
+      const result = await dispatch(
+        registration({ email: user.email, password: user.password })
+      ).unwrap();
+      navigate(fromPathnameRef.current, { replace: true });
+    } catch (e) {
+      message.error(e);
+      setServerError((prev) => ({ ...prev, registration: e }));
+    }
   }
 
   return (

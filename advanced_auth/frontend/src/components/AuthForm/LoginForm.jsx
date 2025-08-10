@@ -7,7 +7,6 @@ import Checkbox from "./Checkbox/Checkbox";
 import classes from "./LoginForm.module.css";
 import { fields, getInitialLoginData, fieldValidators } from "./auth";
 import { useValidation } from "../../hooks/useValidation";
-import { useAuth } from "../../store/useAuth";
 
 export default function LoginForm({ loginHandler, serverError }) {
   const {
@@ -21,8 +20,6 @@ export default function LoginForm({ loginHandler, serverError }) {
   } = useValidation(fields, getInitialLoginData, fieldValidators, {}, () => {
     loginHandler(formData);
   });
-
-  const { login, registration } = useAuth();
 
   return (
     <form className={classes.loginForm}>

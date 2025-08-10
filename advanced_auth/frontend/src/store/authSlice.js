@@ -12,8 +12,7 @@ export const login = createAsyncThunk(
       return { user };
     } catch (e) {
       console.log(e);
-      // console.log(e.response.data.message);
-      return rejectWithValue(e.response.data.message);
+      return rejectWithValue(e.message);
     }
   }
 );

@@ -1,6 +1,6 @@
 export default class ApiError extends Error {
   constructor(
-    message = "Что-то пошло не так. Попробуйте снова чуть позже..",
+    message = "Что-то пошло не так... Попробуйте позже",
     status = 500
   ) {
     super(message);

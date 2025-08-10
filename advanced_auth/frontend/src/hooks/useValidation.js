@@ -70,13 +70,6 @@ export const useValidation = (
     setIsDirtyMap((prev) => ({ ...prev, [e.target.name]: true }));
   };
 
-  const resetForm = (initialData) => {
-    // setFormData(initialData);
-    setErrors({});
-    setIsDirtyMap({});
-    setIsSubmitted(false);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -85,7 +78,6 @@ export const useValidation = (
 
     if (isFormValid(newErrors)) {
       callback();
-      resetForm(getInitialData());
     }
     setIsSubmitted(true);
   };

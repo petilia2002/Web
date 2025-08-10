@@ -37,10 +37,12 @@ httpClient.interceptors.response.use(
         return httpClient.request(originalRequest);
       } catch (e) {
         localStorage.removeItem("token");
-        const message = e.response?.data?.message;
-        return Promise.reject(new AuthError(message, e.response?.status));
+        const message = e?.response?.data?.message;
+        return Promise.reject(new AuthError(message, e?.response?.status));
       }
     }
-    return Promise.reject(error);
+    return Promise.reject(
+      new ApiError(error?.response?.data?.message, error?.response?.status)
+    );
   }
 );
