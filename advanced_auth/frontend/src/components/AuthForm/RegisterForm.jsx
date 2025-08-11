@@ -14,8 +14,10 @@ import {
   formValidators,
 } from "./register";
 import { useValidation } from "../../hooks/useValidation";
+import { Spin } from "antd";
+import { useSelector } from "react-redux";
 
-export default function RegisterForm({ registerHandler }) {
+export default function RegisterForm({ registerHandler, serverError }) {
   const [role, setRole] = useState("patient");
   const inputFields = [...fields[role], ...sharedFields];
 
@@ -37,6 +39,8 @@ export default function RegisterForm({ registerHandler }) {
     },
     role
   );
+
+  const { registration } = useSelector((state) => state.auth);
 
   function handleRoleChange(newRole) {
     if (newRole !== role) {
@@ -136,9 +140,20 @@ export default function RegisterForm({ registerHandler }) {
             </div>
           ))}
       </div>
-      <LoginButton className={classes.registerBtn} onClick={handleSubmit}>
+      <LoginButton
+        className={classes.registerBtn}
+        onClick={handleSubmit}
+        disabled={!registration.isLoaded}
+      >
         Создать аккаунт
       </LoginButton>
+      <div className={classes.serverErrorCont}>
+        {registration.isLoaded ? (
+          <p className={classes.errorMsg}>{isSubmitted && serverError}</p>
+        ) : (
+          <Spin spinning={true} size="small" />
+        )}
+      </div>
     </form>
   );
 }

@@ -18,10 +18,20 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const logoutHandler = () => {
-    dispatch(logout());
-    navigate("/", { replace: true });
-    message.success("Успешный выход!");
+  const logoutHandler = async () => {
+    const key = "logoutMessage";
+    message.loading({ content: "Выходим..", key });
+    try {
+      await dispatch(logout()).unwrap();
+      message.success({ content: "Успешный выход!", key, duration: 3 });
+      navigate("/", { replace: true });
+    } catch (e) {
+      message.error({
+        content: "Ошибка при выходе. Попробуйте снова.",
+        key,
+        duration: 3,
+      });
+    }
   };
 
   return (

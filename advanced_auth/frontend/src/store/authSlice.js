@@ -27,8 +27,7 @@ export const registration = createAsyncThunk(
       return { user };
     } catch (e) {
       console.log(e);
-      // console.log(e.response.data.message);
-      return rejectWithValue(e.response.data.message);
+      return rejectWithValue(e.message);
     }
   }
 );
@@ -43,7 +42,7 @@ export const logout = createAsyncThunk(
       return { message: result.data.message };
     } catch (e) {
       console.log(e);
-      return rejectWithValue(e.response.data.message);
+      return rejectWithValue(e.message);
     }
   }
 );
@@ -58,9 +57,9 @@ export const checkAuth = createAsyncThunk(
       console.log(result.data);
       return { user };
     } catch (e) {
-      console.log(e);
-      // console.log(e.response.data.message);
-      return rejectWithValue(e.response.data.message);
+      const msg = e?.response?.data?.message || "Что-то не так с сервером..";
+      console.log(msg);
+      return rejectWithValue(msg);
     }
   }
 );

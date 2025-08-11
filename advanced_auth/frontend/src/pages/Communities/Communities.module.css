@@ -1,0 +1,35 @@
+.communities {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  row-gap: 30px;
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  flex: 1;
+}
+
+.comHeader {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #0e71c8;
+}
+
+.users {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  row-gap: 10px;
+}
+
+.btnCont {
+  display: flex;
+  column-gap: 20px;
+}
+
+.myBtn {
+  font-weight: 500;
+}

@@ -162,3 +162,11 @@
   width: 50%;
   align-self: center;
 }
+
+.serverErrorCont {
+  width: 100%;
+  min-height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -7,6 +7,8 @@ import Checkbox from "./Checkbox/Checkbox";
 import classes from "./LoginForm.module.css";
 import { fields, getInitialLoginData, fieldValidators } from "./auth";
 import { useValidation } from "../../hooks/useValidation";
+import { Spin } from "antd";
+import { useSelector } from "react-redux";
 
 export default function LoginForm({ loginHandler, serverError }) {
   const {
@@ -20,6 +22,8 @@ export default function LoginForm({ loginHandler, serverError }) {
   } = useValidation(fields, getInitialLoginData, fieldValidators, {}, () => {
     loginHandler(formData);
   });
+
+  const { login } = useSelector((state) => state.auth);
 
   return (
     <form className={classes.loginForm}>
@@ -74,11 +78,19 @@ export default function LoginForm({ loginHandler, serverError }) {
             </div>
           </div>
         ))}
-      <LoginButton className={classes.loginbtn} onClick={handleSubmit}>
+      <LoginButton
+        className={classes.loginbtn}
+        onClick={handleSubmit}
+        disabled={!login.isLoaded}
+      >
         Войти
       </LoginButton>
       <div className={classes.serverErrorCont}>
-        <p className={classes.serverError}>{serverError}</p>
+        {login.isLoaded ? (
+          <p className={classes.serverError}>{isSubmitted && serverError}</p>
+        ) : (
+          <Spin spinning={true} size="small" />
+        )}
       </div>
       <div className={classes.linkGroup}>
         <p className={classes.loginText}>Еще нет аккаунта?</p>
