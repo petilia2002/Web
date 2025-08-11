@@ -23,6 +23,7 @@ export default function Authorization({ isLogin }) {
 
   async function loginHandler(user) {
     try {
+      console.log(user);
       const result = await dispatch(login(user)).unwrap();
       navigate(fromPathnameRef.current, { replace: true });
     } catch (e) {

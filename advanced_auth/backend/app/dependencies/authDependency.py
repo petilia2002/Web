@@ -9,17 +9,15 @@ async def require_auth(request: Request):
 
     if not header or not header.startswith("Bearer"):
         raise ApiError.UnauthorizationError(
-            message="The authorization header is missing or contains an access token in the wrong format"
+            message="Заголовок авторизации отсутствует или содержит токен доступа недопустимого формата"
         )
 
     terms = header.split(" ")
     if len(terms) != 2:
-        raise ApiError.UnauthorizationError(
-            message="The authorization token is missing"
-        )
+        raise ApiError.UnauthorizationError(message="Access-токен отсутствует")
 
     token = terms[-1]
     payload = TokenService.verify_access_token(token)
     if not payload:
-        raise ApiError.UnauthorizationError(message="Invalid authorization token")
+        raise ApiError.UnauthorizationError(message="Невалидный access-токен")
     return payload

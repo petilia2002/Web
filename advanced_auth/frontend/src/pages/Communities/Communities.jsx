@@ -1,21 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoginButton from "../../components/AuthForm/LoginButton/LoginButton";
 import classes from "./Communities.module.css";
 import UserService from "../../API/UserService";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/authSlice";
+import { useFetching } from "../../hooks/useFetching";
 
 export default function Communities() {
-  const [users, setUsers] = useState([]);
-  const [show, setShow] = useState(false);
+  const [users1, setUsers1] = useState([]);
+  const [users2, setUsers2] = useState([]);
+  const [users3, setUsers3] = useState([]);
 
+  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+
+  const [fetching1, isLoded1, isError1] = useFetching(async () => {
+    const result = await UserService.getUsers();
+    await new Promise((res) => setTimeout(res, 2000));
+    setUsers1(result.data);
+    setShow(true);
+  });
+
+  const [fetching2, isLoded2, isError2] = useFetching(async () => {
+    const result = await UserService.getUsers();
+    await new Promise((res) => setTimeout(res, 2000));
+    setUsers2(result.data);
+    setShow(true);
+  });
+
+  const [fetching3, isLoded3, isError3] = useFetching(async () => {
+    const result = await UserService.getUsers();
+    await new Promise((res) => setTimeout(res, 2000));
+    setUsers3(result.data);
+    setShow(true);
+  });
+
+  // const handlerClick = async () => {
+  //   try {
+  //     const result = await UserService.getUsers();
+  //     setUsers(result.data);
+  //     setShow(true);
+  //   } catch (e) {
+  //     console.log(e.message, e.status);
+  //     if (e.status === 401) {
+  //       console.log("АВТОРИЗУЙТЕСЬ ЗАНОВО!!!");
+  //     }
+  //   }
+  // };
+
+  // const handlerClick = async () => {
+  //   await fetching1();
+  //   await fetching2();
+  //   await fetching3();
+  // };
   const handlerClick = async () => {
-    try {
-      const result = await UserService.getUsers();
-      console.log(result);
-      setUsers(result.data);
-      setShow(true);
-    } catch (e) {
-      console.log(e.message, e.status);
-    }
+    fetching1();
+    fetching2();
+    fetching3();
   };
 
   return (
@@ -25,12 +66,25 @@ export default function Communities() {
         <LoginButton onClick={handlerClick} className={classes.myBtn}>
           Показать
         </LoginButton>
-        <LoginButton onClick={() => setShow(false)} className={classes.myBtn}>
+        <LoginButton
+          onClick={() => {
+            setShow(false);
+            setUsers1([]);
+            setUsers2([]);
+            setUsers3([]);
+          }}
+          className={classes.myBtn}
+        >
           Скрыть
         </LoginButton>
       </div>
       <div className={classes.users}>
-        {show && users.map((user) => <div key={user.email}>{user.email}</div>)}
+        {show &&
+          users1.map((user, index) => <div key={index}>{user.email}</div>)}
+        {show &&
+          users2.map((user, index) => <div key={index}>{user.email}</div>)}
+        {show &&
+          users3.map((user, index) => <div key={index}>{user.email}</div>)}
       </div>
     </div>
   );
