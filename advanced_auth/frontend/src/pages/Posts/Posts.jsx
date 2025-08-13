@@ -47,6 +47,7 @@ export default function Posts() {
     //   setPosts([...posts, ...response.data]);
     // }
     // Для обычной пагинации:
+    await new Promise((res) => setTimeout(res, 3000));
     const response = await PostService.getAll(limit, page);
     if (showMore) {
       setPosts([...posts, ...response.data]);
@@ -98,7 +99,7 @@ export default function Posts() {
         limit={limit}
         changeLimit={changeLimit}
       />
-      {!isPostsLoaded && !showMore ? (
+      {isPostsLoaded && !showMore ? (
         <div className={classes.wrapper_loader}>
           <Loader />
         </div>

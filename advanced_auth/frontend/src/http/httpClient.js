@@ -59,11 +59,15 @@ httpClient.interceptors.response.use(
           const { access_token } = result.data;
           localStorage.setItem("token", access_token);
 
+          // await new Promise((res) => setTimeout(res, 1000));
+          console.log(failedQueue.length);
           processQueue(null, access_token);
           isRefreshing = false;
 
           return httpClient.request(originalRequest);
         } catch (e) {
+          // await new Promise((res) => setTimeout(res, 1000));
+          console.log(failedQueue.length);
           processQueue(e, null);
           isRefreshing = false;
 

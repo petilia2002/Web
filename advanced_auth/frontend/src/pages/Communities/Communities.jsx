@@ -5,30 +5,30 @@ import UserService from "../../API/UserService";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/authSlice";
 import { useFetching } from "../../hooks/useFetching";
+import Loader from "../../UI/Loader/Loader";
 
 export default function Communities() {
   const [users1, setUsers1] = useState([]);
   const [users2, setUsers2] = useState([]);
   const [users3, setUsers3] = useState([]);
 
-  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
-  const [fetching1, isLoded1, isError1] = useFetching(async () => {
+  const [fetching1, isLoaded1, isError1] = useFetching(async () => {
     const result = await UserService.getUsers();
     await new Promise((res) => setTimeout(res, 2000));
     setUsers1(result.data);
     setShow(true);
   });
 
-  const [fetching2, isLoded2, isError2] = useFetching(async () => {
+  const [fetching2, isLoaded2, isError2] = useFetching(async () => {
     const result = await UserService.getUsers();
     await new Promise((res) => setTimeout(res, 2000));
     setUsers2(result.data);
     setShow(true);
   });
 
-  const [fetching3, isLoded3, isError3] = useFetching(async () => {
+  const [fetching3, isLoaded3, isError3] = useFetching(async () => {
     const result = await UserService.getUsers();
     await new Promise((res) => setTimeout(res, 2000));
     setUsers3(result.data);
@@ -68,7 +68,6 @@ export default function Communities() {
         </LoginButton>
         <LoginButton
           onClick={() => {
-            setShow(false);
             setUsers1([]);
             setUsers2([]);
             setUsers3([]);
@@ -79,12 +78,21 @@ export default function Communities() {
         </LoginButton>
       </div>
       <div className={classes.users}>
-        {show &&
-          users1.map((user, index) => <div key={index}>{user.email}</div>)}
-        {show &&
-          users2.map((user, index) => <div key={index}>{user.email}</div>)}
-        {show &&
-          users3.map((user, index) => <div key={index}>{user.email}</div>)}
+        {isLoaded1 ? (
+          <Loader />
+        ) : (
+          users1.map((user, index) => <div key={index}>{user.email}</div>)
+        )}
+        {isLoaded2 ? (
+          <Loader />
+        ) : (
+          users2.map((user, index) => <div key={index}>{user.email}</div>)
+        )}
+        {isLoaded3 ? (
+          <Loader />
+        ) : (
+          users3.map((user, index) => <div key={index}>{user.email}</div>)
+        )}
       </div>
     </div>
   );
