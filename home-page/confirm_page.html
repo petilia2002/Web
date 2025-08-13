@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Подтверждение email</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4bb543;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #f5f7ff;
+        color: var(--dark-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color),
+          var(--accent-color)
+        );
+      }
+
+      h1 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      p {
+        margin-bottom: 30px;
+        color: #555;
+      }
+
+      .email {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .animation-container {
+        margin: 30px auto;
+        width: 150px;
+        height: 150px;
+        position: relative;
+      }
+
+      .envelope {
+        width: 100px;
+        height: 70px;
+        background-color: var(--accent-color);
+        border-radius: 8px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .envelope::before {
+        content: "";
+        position: absolute;
+        top: -35px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 35px solid var(--primary-color);
+        transform-origin: bottom;
+        animation: flap 3s ease-in-out infinite;
+      }
+
+      .paper {
+        width: 80px;
+        height: 50px;
+        background-color: white;
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        animation: paper 3s ease-in-out infinite;
+      }
+
+      .checkmark {
+        display: none;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+      }
+
+      .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: var(--success-color);
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+      }
+
+      .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+      }
+
+      .timer {
+        margin: 20px 0;
+        font-size: 18px;
+        color: #666;
+      }
+
+      .timer span {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .btn {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        margin-top: 10px;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+      }
+
+      .btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .success-message {
+        display: none;
+        color: var(--success-color);
+        font-weight: 500;
+        margin-top: 20px;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(0);
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(-10px);
+        }
+      }
+
+      @keyframes flap {
+        0%,
+        100% {
+          transform: rotateX(0deg);
+        }
+        50% {
+          transform: rotateX(-30deg);
+        }
+      }
+
+      @keyframes paper {
+        0%,
+        100% {
+          transform: translate(-50%, -50%);
+        }
+        50% {
+          transform: translate(-50%, -70%);
+        }
+      }
+
+      @keyframes stroke {
+        100% {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 30px 20px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Подтвердите ваш email</h1>
+      <p>
+        Мы отправили письмо с подтверждением на адрес
+        <span class="email">user@example.com</span>. Пожалуйста, проверьте вашу
+        почту и перейдите по ссылке в письме.
+      </p>
+
+      <div class="animation-container">
+        <div class="envelope"></div>
+        <div class="paper"></div>
+        <svg
+          class="checkmark"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 52 52"
+        >
+          <circle
+            class="checkmark__circle"
+            cx="26"
+            cy="26"
+            r="25"
+            fill="none"
+          />
+          <path
+            class="checkmark__check"
+            fill="none"
+            d="M14.1 27.2l7.1 7.2 16.7-16.8"
+          />
+        </svg>
+      </div>
+
+      <div class="timer">
+        Письмо можно отправить повторно через
+        <span id="countdown">60</span> сек.
+      </div>
+
+      <button class="btn" id="resendBtn" disabled>
+        Отправить письмо повторно
+      </button>
+
+      <div class="success-message" id="successMessage">
+        Письмо успешно отправлено!
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const resendBtn = document.getElementById("resendBtn");
+        const countdownElement = document.getElementById("countdown");
+        const successMessage = document.getElementById("successMessage");
+        const envelopeAnimation = document.querySelector(
+          ".animation-container"
+        );
+        const checkmark = document.querySelector(".checkmark");
+
+        let timeLeft = 60;
+
+        // Таймер обратного отсчета
+        const countdown = setInterval(() => {
+          timeLeft--;
+          countdownElement.textContent = timeLeft;
+
+          if (timeLeft <= 0) {
+            clearInterval(countdown);
+            resendBtn.disabled = false;
+            countdownElement.parentElement.style.display = "none";
+          }
+        }, 1000);
+
+        // Клик по кнопке "Отправить повторно"
+        resendBtn.addEventListener("click", function () {
+          // Имитация отправки письма
+          simulateEmailResend();
+        });
+
+        function simulateEmailResend() {
+          // Показать анимацию отправки
+          resendBtn.disabled = true;
+          successMessage.style.display = "none";
+          checkmark.style.display = "none";
+          document.querySelector(".envelope").style.display = "block";
+          document.querySelector(".paper").style.display = "block";
+
+          // Имитация задержки отправки
+          setTimeout(() => {
+            // Скрыть конверт, показать галочку
+            document.querySelector(".envelope").style.display = "none";
+            document.querySelector(".paper").style.display = "none";
+            checkmark.style.display = "block";
+            successMessage.style.display = "block";
+
+            // Сбросить таймер
+            timeLeft = 60;
+            countdownElement.textContent = timeLeft;
+            countdownElement.parentElement.style.display = "block";
+
+            // Запустить таймер снова
+            const newCountdown = setInterval(() => {
+              timeLeft--;
+              countdownElement.textContent = timeLeft;
+
+              if (timeLeft <= 0) {
+                clearInterval(newCountdown);
+                resendBtn.disabled = false;
+                countdownElement.parentElement.style.display = "none";
+              }
+            }, 1000);
+
+            // Через 3 секунды скрыть успешное сообщение
+            setTimeout(() => {
+              successMessage.style.display = "none";
+            }, 3000);
+          }, 1500);
+        }
+
+        // Эмуляция подтверждения email (для демонстрации)
+        // В реальном приложении это будет обрабатываться после перехода по ссылке из письма
+        if (window.location.search.includes("confirm=true")) {
+          setTimeout(() => {
+            envelopeAnimation.innerHTML = `
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" style="display: block;">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    `;
+            document.querySelector("h1").textContent = "Email подтверждён!";
+            document.querySelector("p").textContent =
+              "Спасибо за подтверждение вашего email адреса. Теперь вы можете пользоваться всеми возможностями нашего сервиса.";
+            document.querySelector(".timer").style.display = "none";
+            resendBtn.style.display = "none";
+          }, 1000);
+        }
+      });
+    </script>
+  </body>
+</html>
