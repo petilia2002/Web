@@ -1,0 +1,36 @@
+<a href="#" class="logo">
+  <img src="./logo/daily-health-app (1).png" width="50px" />
+  <div class="logo-text">
+    <span>Сервис</span>
+    <span>здоровья</span>
+  </div>
+</a>
+
+<style>
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-text {
+    display: inline-block;
+    background: linear-gradient(to right, #86edfc, #73aafa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+    line-height: 1.2;
+    transition: transform 0.3s ease;
+    transform-origin: left center;
+  }
+
+  .logo-text span {
+    display: block;
+  }
+
+  .logo:hover .logo-text {
+    transform: scaleX(1.1);
+  }
+</style>
