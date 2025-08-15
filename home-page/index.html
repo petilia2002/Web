@@ -37,11 +37,18 @@
         box-sizing: border-box;
       }
 
+      html {
+        overflow-y: scroll;
+      }
+
       body {
         font-family: "Roboto", sans-serif;
         color: var(--dark);
         line-height: 1.6;
         overflow-x: hidden;
+        /* overflow-y: auto;
+        width: 100vw; */
+        /* overflow-y: hidden; */
       }
 
       h1,
@@ -107,6 +114,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
+        /* background: #ccc; */
       }
 
       .section {
@@ -254,7 +262,7 @@
           url("./images/AdobeStock_336743626.jpeg") no-repeat bottom;
         background-size: cover;
         height: calc(100vh - 64px);
-        width: 100vw;
+        /* width: 100vw; */
         color: var(--white);
         text-align: center;
         display: flex;
@@ -294,7 +302,7 @@
         display: flex;
         justify-content: center;
         gap: 1.5rem;
-        margin-top: 2rem;
+        margin-top: 0.8rem;
       }
 
       .main-btn {
@@ -589,6 +597,10 @@
         margin-bottom: 0;
       }
 
+      .price-btn {
+        align-self: center;
+      }
+
       .price span {
         font-size: 1rem;
         font-weight: 400;
@@ -596,6 +608,8 @@
 
       .pricing-body {
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
       }
 
       .pricing-features {
@@ -851,7 +865,7 @@
         </p>
         <div class="hero-btns">
           <a href="#" class="main-btn main-btn-primary">Начать бесплатно</a>
-          <a href="#" class="main-btn main-btn-primary">Узнать больше</a>
+          <a href="#" class="main-btn main-btn-outline">Узнать больше</a>
         </div>
         <div class="hero-features">
           <div class="hero-item">
@@ -1110,7 +1124,7 @@
                   врачей
                 </li>
               </ul>
-              <a href="#" class="btn btn-outline">Начать бесплатно</a>
+              <a href="#" class="btn btn-outline price-btn">Начать бесплатно</a>
             </div>
           </div>
           <div class="pricing-card">
@@ -1129,7 +1143,7 @@
                 <li><i class="fas fa-check"></i> Подробные графики</li>
                 <li><i class="fas fa-check"></i> 2 консультации врача</li>
               </ul>
-              <a href="#" class="btn btn-primary">Выбрать тариф</a>
+              <a href="#" class="btn btn-primary price-btn">Выбрать тариф</a>
             </div>
           </div>
           <div class="pricing-card">
@@ -1147,7 +1161,7 @@
                 <li><i class="fas fa-check"></i> Расширенная аналитика</li>
                 <li><i class="fas fa-check"></i> 5 консультаций врача</li>
               </ul>
-              <a href="#" class="btn btn-outline">Выбрать тариф</a>
+              <a href="#" class="btn btn-outline price-btn">Выбрать тариф</a>
             </div>
           </div>
         </div>
