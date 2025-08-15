@@ -36,7 +36,7 @@ const columns = [
   },
 ];
 
-export default function MyTable() {
+export default function MyTable({ rows }) {
   const dataSource = useMemo(() => {
     return pokemons.map((item) => ({
       ...item,
@@ -53,8 +53,10 @@ export default function MyTable() {
       columns={columns}
       pagination={{
         position: ["bottomRight"],
-        pageSize: 5,
-        pageSizeOptions: ["5", "10", "15"],
+        pageSize: rows,
+        // defaultPageSize: 5,
+        // showSizeChanger: true,
+        // pageSizeOptions: ["5", "10", "15"],
       }}
     />
   );

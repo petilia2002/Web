@@ -33,3 +33,7 @@ body {
 .title.ant-typography {
   margin-bottom: 20px;
 }
+
+.divider {
+  margin: 0px 0px 25px 0px;
+}
