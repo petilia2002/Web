@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "number": "001",
+    "name": "bulbasaur",
+    "classification": "grass, poison",
+    "fleeRate": "0.03",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+  },
+  {
+    "id": 2,
+    "number": "002",
+    "name": "ivysaur",
+    "classification": "grass, poison",
+    "fleeRate": "0.13",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png"
+  },
+  {
+    "id": 3,
+    "number": "003",
+    "name": "venusaur",
+    "classification": "grass, poison",
+    "fleeRate": "0.05",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png"
+  },
+  {
+    "id": 4,
+    "number": "004",
+    "name": "charmander",
+    "classification": "fire",
+    "fleeRate": "0.14",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png"
+  },
+  {
+    "id": 5,
+    "number": "005",
+    "name": "charmeleon",
+    "classification": "fire",
+    "fleeRate": "0.16",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png"
+  },
+  {
+    "id": 6,
+    "number": "006",
+    "name": "charizard",
+    "classification": "fire, flying",
+    "fleeRate": "0.16",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
+  },
+  {
+    "id": 7,
+    "number": "007",
+    "name": "squirtle",
+    "classification": "water",
+    "fleeRate": "0.09",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"
+  },
+  {
+    "id": 8,
+    "number": "008",
+    "name": "wartortle",
+    "classification": "water",
+    "fleeRate": "0.08",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png"
+  },
+  {
+    "id": 9,
+    "number": "009",
+    "name": "blastoise",
+    "classification": "water",
+    "fleeRate": "0.05",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png"
+  },
+  {
+    "id": 10,
+    "number": "010",
+    "name": "caterpie",
+    "classification": "bug",
+    "fleeRate": "0.01",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png"
+  },
+  {
+    "id": 11,
+    "number": "011",
+    "name": "metapod",
+    "classification": "bug",
+    "fleeRate": "0.10",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/11.png"
+  },
+  {
+    "id": 12,
+    "number": "012",
+    "name": "butterfree",
+    "classification": "bug, flying",
+    "fleeRate": "0.06",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png"
+  },
+  {
+    "id": 13,
+    "number": "013",
+    "name": "weedle",
+    "classification": "bug, poison",
+    "fleeRate": "0.13",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png"
+  },
+  {
+    "id": 14,
+    "number": "014",
+    "name": "kakuna",
+    "classification": "bug, poison",
+    "fleeRate": "0.10",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png"
+  },
+  {
+    "id": 15,
+    "number": "015",
+    "name": "beedrill",
+    "classification": "bug, poison",
+    "fleeRate": "0.11",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png"
+  },
+  {
+    "id": 16,
+    "number": "016",
+    "name": "pidgey",
+    "classification": "normal, flying",
+    "fleeRate": "0.16",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png"
+  },
+  {
+    "id": 17,
+    "number": "017",
+    "name": "pidgeotto",
+    "classification": "normal, flying",
+    "fleeRate": "0.06",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/17.png"
+  },
+  {
+    "id": 18,
+    "number": "018",
+    "name": "pidgeot",
+    "classification": "normal, flying",
+    "fleeRate": "0.20",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png"
+  },
+  {
+    "id": 19,
+    "number": "019",
+    "name": "rattata",
+    "classification": "normal",
+    "fleeRate": "0.15",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/19.png"
+  },
+  {
+    "id": 20,
+    "number": "020",
+    "name": "raticate",
+    "classification": "normal",
+    "fleeRate": "0.04",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/20.png"
+  },
+  {
+    "id": 21,
+    "number": "021",
+    "name": "spearow",
+    "classification": "normal, flying",
+    "fleeRate": "0.19",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/21.png"
+  },
+  {
+    "id": 22,
+    "number": "022",
+    "name": "fearow",
+    "classification": "normal, flying",
+    "fleeRate": "0.02",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/22.png"
+  },
+  {
+    "id": 23,
+    "number": "023",
+    "name": "ekans",
+    "classification": "poison",
+    "fleeRate": "0.11",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/23.png"
+  },
+  {
+    "id": 24,
+    "number": "024",
+    "name": "arbok",
+    "classification": "poison",
+    "fleeRate": "0.05",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/24.png"
+  },
+  {
+    "id": 25,
+    "number": "025",
+    "name": "pikachu",
+    "classification": "electric",
+    "fleeRate": "0.18",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+  },
+  {
+    "id": 26,
+    "number": "026",
+    "name": "raichu",
+    "classification": "electric",
+    "fleeRate": "0.19",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png"
+  },
+  {
+    "id": 27,
+    "number": "027",
+    "name": "sandshrew",
+    "classification": "ground",
+    "fleeRate": "0.10",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/27.png"
+  },
+  {
+    "id": 28,
+    "number": "028",
+    "name": "sandslash",
+    "classification": "ground",
+    "fleeRate": "0.17",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/28.png"
+  },
+  {
+    "id": 29,
+    "number": "029",
+    "name": "nidoran-f",
+    "classification": "poison",
+    "fleeRate": "0.11",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/29.png"
+  },
+  {
+    "id": 30,
+    "number": "030",
+    "name": "nidorina",
+    "classification": "poison",
+    "fleeRate": "0.17",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/30.png"
+  }
+]
