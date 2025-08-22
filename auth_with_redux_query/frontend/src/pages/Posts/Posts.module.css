@@ -1,0 +1,12 @@
+.wrapper_loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.target {
+  background: red;
+  height: 20px;
+}

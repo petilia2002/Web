@@ -1,0 +1,40 @@
+.link {
+  color: #0e71c8;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  border-radius: 6px;
+  padding: 5px 10px;
+  background: transparent;
+}
+
+.link::after {
+  content: "";
+  background: #0e71c8;
+  height: 2px;
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+.link.active {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.link.active::after,
+.link.active:hover::after {
+  content: none;
+}
+
+@media (max-width: 1024px) {
+  .link {
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+}

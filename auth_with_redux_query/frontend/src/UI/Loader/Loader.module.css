@@ -1,0 +1,17 @@
+.loader {
+  width: 100px;
+  height: 100px;
+  border: 3px dashed #1da1f2;
+  border-radius: 100%;
+  animation: loading 1000ms linear 0s infinite normal forwards;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0) scale(1);
+  }
+
+  to {
+    transform: rotate(360deg) scale(1.4);
+  }
+}
